@@ -29,8 +29,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.TextInputDialog;
 
-@SuppressWarnings("all")
-
 public class ConstructChessBoard {
 	@FXML
 	private Label labelRef;
@@ -108,11 +106,11 @@ public class ConstructChessBoard {
 	}
 
 	public void centralizaTabuleiro() {
-		menuBar.setVisible(false);
+		//menuBar.setVisible(false);
 		// anchorPane.setLeftAnchor(labelRef, 0.0);
 		// anchorPane.setRightAnchor(labelRef, 0.0);
 		// labelRef.setAlignment(Pos.CENTER);
-		labelRef.setVisible(false);
+		//labelRef.setVisible(false);
 	
 		labelRef.setText("aaaaaaa");
 		// tabuleiro.setMaxSize(100,50);
@@ -138,7 +136,7 @@ public class ConstructChessBoard {
 	
 	public void bMenos() {
 		
-		String FENatual=abertura01reader.displayNextPosition(actualMove);
+		String FENatual = abertura01reader.displayNextPosition(actualMove);
 		
 		boardModel.passFENtoLines(FENatual); // ex 30 - white
 																								// checkmate in 3

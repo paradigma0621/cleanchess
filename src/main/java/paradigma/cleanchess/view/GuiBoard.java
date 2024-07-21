@@ -1,6 +1,6 @@
 package paradigma.cleanchess.view;
 
-import paradigma.cleanchess.model.BoardModel;
+import paradigma.cleanchess.model.FenProcessor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -8,11 +8,11 @@ import javafx.scene.layout.StackPane;
 
 
 @SuppressWarnings("all")
-public class GUIboard {
+public class GuiBoard {
 	// ChessBoard chessBoard;
 	private double scaleFactor = 0.8;
 	private GridPane gridPane;
-	private BoardModel boardModel;
+	private FenProcessor FENProcessor;
 	private StackPane stackPane;
 	private ImageView imageSq[][] = new ImageView[9][9];
    	private ImageView imageEmptyBoard[][] = new ImageView[9][9];
@@ -59,8 +59,8 @@ public class GUIboard {
 	private Image imgPretasReiCasaBranca;
 	private Image imgPretasReiCasaPreta;
 
-	public GUIboard(BoardModel boardModel, StackPane stackPane) { /// , BorderPane stackPane) {
-		this.boardModel = boardModel;
+	public GuiBoard(FenProcessor FENProcessor, StackPane stackPane) { /// , BorderPane stackPane) {
+		this.FENProcessor = FENProcessor;
 		this.stackPane = stackPane;
 		//gridPane = new GridPane();
 		loadImagesIntoMemory();
@@ -310,7 +310,6 @@ public class GUIboard {
 					imageEmptyBoard[i][j].setImage(imgCasaPreta);
 				}
 
-				// imageSq[i][j].setImage(imgCasaBranca);
 				imageEmptyBoard[i][j].setFitWidth(96 * scaleFactor);
 				imageEmptyBoard[i][j].setFitHeight(96 * scaleFactor);
 				gridPane.add(imageEmptyBoard[i][j], i - 1, j - 1);
@@ -323,7 +322,6 @@ public class GUIboard {
 		char currentChar;
 		boolean isWhiteSquare = true;
 
-			
 		for (int column = 1; column <= 8; column++) {
 			for (int line = 1; line <= 8; line++) {
 				currentChar = boardASCII[column * 10 + line];
@@ -463,8 +461,6 @@ public class GUIboard {
 			}
 		
 		if (angleToRotateTheBoard==180) rotateTheBoard();
-		
-		
 	}
 
 
@@ -513,11 +509,10 @@ public class GUIboard {
     }
    
     public void setAngleToRotate() {
-     	angleToRotateTheBoard=angleToRotateTheBoard+180;
+     	angleToRotateTheBoard = angleToRotateTheBoard + 180;
     	
-    	if (angleToRotateTheBoard==360) {
+    	if (angleToRotateTheBoard == 360)
     		angleToRotateTheBoard = 0;
-  		}
     }
     
     public void rotateTheBoard() {
@@ -544,23 +539,18 @@ public class GUIboard {
     }
     
     public void drawBoard(String FENatual) { 
-		boardModel.passFENtoLines(FENatual); // ex 30 - white
-		boardModel.decriptFEN();
+		FENProcessor.passFENtoLines(FENatual);
+		FENProcessor.decriptFEN();
 		//boardModel.printBoardASCII();
 		drawEmptyBoard();
-		refreshBoardImage(boardModel.getBoardASCII());
+		refreshBoardImage(FENProcessor.getBoardASCII());
     }
     
     public void changeNeedToRotateTheBoard() {
-       	needToRotateTheBoard=!needToRotateTheBoard;
+		needToRotateTheBoard = !needToRotateTheBoard;
     }
     
     public boolean getIfNeedToRotateTheBoard() {
        	return needToRotateTheBoard;
     }
-    
-    /*
-    public int getAngleToRotateTheBoard() {
-    	return angleToRotateTheBoard;
-    }*/
 }

@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 
 <GridPane fx:id="bigGrid" alignment="TOP_CENTER" minWidth="1000.0" onKeyPressed="#pressedAkey" onKeyReleased="#releasedTheKey" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="paradigma.cleanchess.controller.ConstructChessBoard">
    <columnConstraints>
@@ -64,14 +65,18 @@
         </Menu>
       </menus>
     </MenuBar>
+      <Label fx:id="labelRef" text="Label">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
     <AnchorPane fx:id="anchorPane" cacheShape="false" centerShape="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="758.0" style="-fx-background-color: #ffffff;" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER">
       <children>
             <Pane fx:id="panePano" cacheShape="false" centerShape="false" prefHeight="100.0" prefWidth="490.0">
                <children>
-                  <Button fx:id="trabalhaTabul" layoutX="14.0" layoutY="21.0" mnemonicParsing="false" onAction="#centralizaTabuleiro" text="trabalhaTabul" />
+                  <Button fx:id="trabalhaTabul" layoutX="14.0" layoutY="62.0" mnemonicParsing="false" onAction="#centralizaTabuleiro" text="trabalhaTabul" />
                </children>
             </Pane>
-            <Label fx:id="labelRef" layoutX="10.0" layoutY="10.0" text="Label" />
             <Button fx:id="bbMais" layoutX="605.0" layoutY="13.0" mnemonicParsing="false" onAction="#bMais" text="b+" />
             <Button fx:id="bbMenos" layoutX="605.0" layoutY="50.0" mnemonicParsing="false" onAction="#bMenos" text="b-" />
             <Label fx:id="labelAlvo" layoutX="706.0" layoutY="32.0" text="Label" />

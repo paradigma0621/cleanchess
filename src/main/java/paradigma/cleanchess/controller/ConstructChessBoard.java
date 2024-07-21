@@ -1,13 +1,10 @@
 package paradigma.cleanchess.controller;
 
-
-
 import java.util.Optional;
-
-import paradigma.cleanchess.model.BoardModel;
-import paradigma.cleanchess.model.PGNreader;
+import paradigma.cleanchess.model.FenProcessor;
+import paradigma.cleanchess.model.PgnReader;
 import paradigma.cleanchess.model.PlayAgainstEngine;
-import paradigma.cleanchess.view.GUIboard;
+import paradigma.cleanchess.view.GuiBoard;
 import paradigma.cleanchess.model.ValidMoveAnalyser;
 import ictk.boardgame.chess.ChessGame;
 import paradigma.cleanchess.model.OpeningsSources;
@@ -25,8 +22,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.TextInputDialog;
-
-@SuppressWarnings("all")
 
 public class ConstructChessBoard {
 	@FXML
@@ -71,53 +66,55 @@ public class ConstructChessBoard {
 
 	
 	private static ConstructChessBoard chessBoard;
-	private BoardModel boardModel;
-	private GUIboard boardGUI;
+	private FenProcessor FENProcessor;
+	private GuiBoard boardGUI;
 	private int mousePressedColumn, mousePressedRow, mouseReleasedColumn, mouseReleasedRow;
-	// double escala=0.5;
 	private int actualMove=0;
-	private PGNreader abertura01reader;
+	private PgnReader abertura01reader;
 	private String numVariante;
 	private boolean keyReleased=true;
 	private ChessGame game;
-	private PGNreader toPlayGame;
+	private PgnReader toPlayGame;
 	
 	public ConstructChessBoard() {
-		boardModel = new BoardModel();
+		FENProcessor = new FenProcessor();
 		//System.out.println("criou instancias que eu vou usar");
 		String pgnExamplePath =
 				getClass().getResource("/pgn/01_DefesaEslava_VarianteMaisImportante(b)_FonteXB.pgn").toExternalForm();
-		abertura01reader = new PGNreader(pgnExamplePath);
+		abertura01reader = new PgnReader(pgnExamplePath);
+		System.out.println("aqui2");
 	}
 	
 	public void initialize() {
-		boardGUI = new GUIboard(boardModel, stackPane);
+		boardGUI = new GuiBoard(FENProcessor, stackPane);
+		System.out.println("aqui");
 	}
 
-	public static ConstructChessBoard getLinkToTheBoard() {
-		return chessBoard;
-	}
+	/*
+        public static ConstructChessBoard getLinkToTheBoard() {
+            return chessBoard;
+        }
 
-	public void entrar() {
+        public void entrar() {
 
-		String strCasaPreta = getClass().getResource("/images/casaPreta96x96.jpg").toExternalForm();
-		String strCasaBranca = getClass().getResource("/images/casaBranca96x96.jpg").toExternalForm();
-		String strBrancasPeaoCasaBranca = getClass().getResource("/images/casaBranca-peaoBranco.jpg").toExternalForm();
-		String strBrancasPeaoCasaPreta = getClass().getResource("/images/casaPreta-peaoBranco.jpg").toExternalForm();
+            //String strCasaPreta = getClass().getResource("/images/casaPreta96x96.jpg").toExternalForm();
+            //String strCasaBranca = getClass().getResource("/images/casaBranca96x96.jpg").toExternalForm();
+            //String strBrancasPeaoCasaBranca = getClass().getResource("/images/casaBranca-peaoBranco.jpg").toExternalForm();
+            //String strBrancasPeaoCasaPreta = getClass().getResource("/images/casaPreta-peaoBranco.jpg").toExternalForm();
 
-		System.out.println("botao pressionado");
-		// labelEmail.
+            System.out.println("botao pressionado");
+            // labelEmail.
 
-	}
-
+        }
+    */
 	public void centralizaTabuleiro() {
 		menuBar.setVisible(false);
 		// anchorPane.setLeftAnchor(labelRef, 0.0);
 		// anchorPane.setRightAnchor(labelRef, 0.0);
 		// labelRef.setAlignment(Pos.CENTER);
-		labelRef.setVisible(false);
+		//labelRef.setVisible(false);
 	
-		labelRef.setText("aaaaaaa");
+		//labelRef.setText("aaaaaaa");
 		// tabuleiro.setMaxSize(100,50);
 		// borderPane.setAlignment(stackPane, Pos.CENTER);
 		/// borderPane.set
@@ -128,12 +125,12 @@ public class ConstructChessBoard {
 	}
 
 	public void bMais() {
-		String FENatual=abertura01reader.displayNextPosition(actualMove);
-		boardModel.passFENtoLines(FENatual); // ex 30 - white
-		boardModel.decriptFEN();
+		String FENatual = abertura01reader.displayNextPosition(actualMove);
+		FENProcessor.passFENtoLines(FENatual); // ex 30 - white
+		FENProcessor.decriptFEN();
 		//boardModel.printBoardASCII();
 		boardGUI.drawEmptyBoard();
-		boardGUI.refreshBoardImage(boardModel.getBoardASCII());
+		boardGUI.refreshBoardImage(FENProcessor.getBoardASCII());
 		actualMove++;
 		
 	}
@@ -143,15 +140,14 @@ public class ConstructChessBoard {
 		
 		String FENatual=abertura01reader.displayNextPosition(actualMove);
 		
-		boardModel.passFENtoLines(FENatual); // ex 30 - white
-																								// checkmate in 3
-		
-		boardModel.decriptFEN();
+		FENProcessor.passFENtoLines(FENatual); // ex 30 - white
+
+		FENProcessor.decriptFEN();
 
 		//boardModel.printBoardASCII();
 
 		boardGUI.drawEmptyBoard();
-		boardGUI.refreshBoardImage(boardModel.getBoardASCII());
+		boardGUI.refreshBoardImage(FENProcessor.getBoardASCII());
 		actualMove--;
 		
 	}
@@ -164,17 +160,15 @@ public class ConstructChessBoard {
 		// squares before (AP????)
 
 		//boardModel.passFENtoLines("r1b2k1r/1p1p1pp1/p2P4/4N1Bp/3p4/8/PPB2P2/2K1R3 w - - 0 1"); // ex 30 - white// checkmate in 3
-		boardModel.passFENtoLines("3B1R1K/4rb1R/5Pp1/1n2k1N1/2p3P1/2P5/2NQ4/8"); // mate em 3 - esse que vale com "o"
+
 //				"k1/pp4p1/1b2p2p/8/P3b1Nq/BPr4P/R4P1K/4RQ2 b - - 0 1"); //ex 86 - mate em 3. as pretas ganham
 		//boardModel.passFENtoLines("3r4/pp3kpQ/5p1p/3q1b2/1B2N3/8/PP3PPP/4R1K1 w - - 0 1"); // ex 30 - white
 		//problema 49 do polgar mate em 3 - as brancas ganham													
 
-		boardModel.decriptFEN();
-
-		boardModel.printBoardASCII();
-
+		FENProcessor.decriptFEN();
+		FENProcessor.printBoardASCII();
 		boardGUI.drawEmptyBoard();
-		boardGUI.refreshBoardImage(boardModel.getBoardASCII());
+		boardGUI.refreshBoardImage(FENProcessor.getBoardASCII());
 	}
 
 	/*
@@ -244,147 +238,151 @@ public class ConstructChessBoard {
 	
 	public void pressedAkey() {
 
-		bigGrid.addEventHandler(KeyEvent.KEY_RELEASED, (key) -> {
-			
+		bigGrid.addEventHandler(KeyEvent.KEY_RELEASED, key -> {
 			if (keyReleased) {
-		
-				if (key.getText().equals("+")) {
-					System.out.println("You pressed +...");
-					if (actualMove < abertura01reader.getHistorySize()) actualMove++;
-					
-					String FENatual=abertura01reader.displayNextPosition(actualMove-1); //actual move
-									//starts at 0 in abertura01reader, but here whe have the initial
-									//value of actualMove=1
-					boardGUI.drawBoard(FENatual);
-				}
-		
-				if (key.getText().equals("-")) {
-					System.out.println("You pressed -...");
-					if (actualMove >0) actualMove--; 
-					
-					String FENatual=abertura01reader.displayNextPosition(actualMove-1); //actual move
-					//starts at 0 in abertura01reader, but here whe have the initial
-					//value of actualMove=1
-					boardGUI.drawBoard(FENatual);
-					}
-					
+				if (key.isControlDown()) {
+					labelRef.setText("You pressed control + " + key.getCode());
+				} else {
+					labelRef.setText("");
+					if (key.getText().equals("+")) {
+						System.out.println("You pressed +...");
+						if (actualMove < abertura01reader.getHistorySize()) actualMove++;
 
-				if (key.getText().equals("s")) {
-					System.out.println("You pressed s");
-					actualMove++;
-					//String FENatual=abertura01reader.displayNextPosition(actualMove-1);
-					//System.out.println("FEN processada: " + FENatual);
-					System.out.println("actualMove atual desde o começo: " + actualMove);
-					String FENatual;
-					if (actualMove==0) {
-						 FENatual = "2kr3r/ppp2ppp/8/2bqP3/3nBBb1/8/PPPN2PP/R3KQ1R b KQ - 0 1";
-						 System.out.println("Running atualMove==0");
-					} else {
-						 FENatual=toPlayGame.displayNextPosition(actualMove-1);
-						 System.out.println("Running (actualMove !=0) FENatual=" + FENatual);
-					}
-					PlayAgainstEngine.createScriptFile(FENatual);
-					PlayAgainstEngine.runEngine();
-					System.out.println("depois de rodar engine");
-					String bruteBestMove = PlayAgainstEngine.readEngineOutput();
-					char bestMove[] = PlayAgainstEngine.getTheEngineMove(bruteBestMove);
-					System.out.println("best move from file: " + String.copyValueOf(bestMove));
-					PlayAgainstEngine.makeMove(bestMove, toPlayGame);
-					
-					
-					System.out.println("acutal mve na conrttroleR: " + actualMove);
-					
-					String FENatualMovida=toPlayGame.moveMaker(bestMove, game); //actual move
-					System.out.println("fenMovida: "+FENatualMovida);
-
-					boardGUI.drawBoard(FENatualMovida);
-
-					
-				}
-				
-			
-				if (key.getText().equals("m")) {//mate em 3
-					//String FENatual="3B1R1K/4rb1R/5Pp1/1n2k1N1/2p3P1/2P5/2NQ4/8"; // ex 26 - white// checkmate in 2
-					String FENatual="r1b2r2/pppp1p2/6kp/6NN/4P3/8/PPP1B1PP/R4RK1 w - - 0 1";// ex 26 - white// checkmate in 3
-					System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-					boardGUI.drawBoard(FENatual);
-				}
-
-				if (key.getText().equals("M")) {//mate em 3
-					String FENstring;
-					Button btnNome = new Button("Entrar com FEN");
-		            TextInputDialog dialogoFEN = new TextInputDialog();
-
-		            dialogoFEN.setTitle("Entrar com FEN");
-		            dialogoFEN.setHeaderText("Entrar com FEN");
-		            dialogoFEN.setContentText("FEN:");
-		            dialogoFEN.getEditor().setPrefWidth(500);
-		            
-		            Optional<String> result = dialogoFEN.showAndWait();
-
-		            if (!result.isPresent() || result.get().trim().isBlank()) {
-		            	//Do nothing
-		            } else {
-		            	FENstring = result.get();
-						boardGUI.drawBoard(FENstring);
-		            }
-					//boardGUI.drawBoard(FENatual);
-
-				}
-				
-				if (key.getText().equals("r")) {//rotate the board
-					//boardGUI.changeNeedToRotateTheBoard();
-					boardGUI.setAngleToRotate();
-					boardGUI.rotateTheBoard();
-					
-				}
-				
-				if (key.getText().equals("F")) {//rotate the board
-					PGNloader.getStage().setMaximized(true);
-					PGNloader.getStage().setFullScreen(true); 
-				}
-				
-				
-				if (key.getText().equals("P")) {//rotate the board
-					 game = new ChessGame();
-					 toPlayGame = new PGNreader();
+						String FENatual = abertura01reader.displayNextPosition(actualMove - 1); //actual move
+						//starts at 0 in abertura01reader, but here whe have the initial
+						//value of actualMove=1
+						boardGUI.drawBoard(FENatual);
 					}
 
-				if (key.getText().equals("x")) {
+					if (key.getText().equals("-")) {
+						System.out.println("You pressed -...");
+						if (actualMove > 0) actualMove--;
 
+						String FENatual = abertura01reader.displayNextPosition(actualMove - 1); //actual move
+						//starts at 0 in abertura01reader, but here whe have the initial
+						//value of actualMove=1
+						boardGUI.drawBoard(FENatual);
+					}
+
+
+					if (key.getText().equals("s")) {
+						System.out.println("You pressed s");
+						actualMove++;
+						//String FENatual=abertura01reader.displayNextPosition(actualMove-1);
+						//System.out.println("FEN processada: " + FENatual);
+						System.out.println("actualMove atual desde o começo: " + actualMove);
+						String FENatual;
+						if (actualMove == 0) {
+							FENatual = "2kr3r/ppp2ppp/8/2bqP3/3nBBb1/8/PPPN2PP/R3KQ1R b KQ - 0 1";
+							System.out.println("Running atualMove==0");
+						} else {
+							FENatual = toPlayGame.displayNextPosition(actualMove - 1);
+							System.out.println("Running (actualMove !=0) FENatual=" + FENatual);
+						}
+						PlayAgainstEngine.createScriptFile(FENatual);
+						PlayAgainstEngine.runEngine();
+						System.out.println("depois de rodar engine");
+						String bruteBestMove = PlayAgainstEngine.readEngineOutput();
+						char bestMove[] = PlayAgainstEngine.getTheEngineMove(bruteBestMove);
+						System.out.println("best move from file: " + String.copyValueOf(bestMove));
+						PlayAgainstEngine.makeMove(bestMove, toPlayGame);
+
+
+						System.out.println("acutal mve na controlleR: " + actualMove);
+
+						String FENatualMovida = toPlayGame.moveMaker(bestMove, game); //actual move
+						System.out.println("fenMovida: " + FENatualMovida);
+
+						boardGUI.drawBoard(FENatualMovida);
+
+
+					}
+
+
+					if (key.getText().equals("m")) {//mate em 3
+						//String FENatual="3B1R1K/4rb1R/5Pp1/1n2k1N1/2p3P1/2P5/2NQ4/8"; // ex 26 - white// checkmate in 2
+						String FENatual = "3B1R1K/4rb1R/5Pp1/1n2k1N1/2p3P1/2P5/2NQ4/8"; // mate 26 (em 2 (dos difíceis) - esse que vale com "m"
+						System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+						boardGUI.drawBoard(FENatual);
+					}
+
+					if (key.getText().equals("M")) {//mate em 3
+						String FENstring;
+						Button btnNome = new Button("Entrar com FEN");
+						TextInputDialog dialogoFEN = new TextInputDialog();
+
+						dialogoFEN.setTitle("Entrar com FEN");
+						dialogoFEN.setHeaderText("Entrar com FEN");
+						dialogoFEN.setContentText("FEN:");
+						dialogoFEN.getEditor().setPrefWidth(500);
+
+						Optional<String> result = dialogoFEN.showAndWait();
+
+						if (!result.isPresent() || result.get().trim().isBlank()) {
+							//Do nothing
+						} else {
+							FENstring = result.get();
+							boardGUI.drawBoard(FENstring);
+						}
+						//boardGUI.drawBoard(FENatual);
+
+					}
+
+					if (key.getText().equals("r")) {//rotate the board
+						//boardGUI.changeNeedToRotateTheBoard();
+						boardGUI.setAngleToRotate();
+						boardGUI.rotateTheBoard();
+
+					}
+
+					if (key.getText().equals("F")) {//rotate the board
+						PGNloader.getStage().setMaximized(true);
+						PGNloader.getStage().setFullScreen(true);
+					}
+
+
+					if (key.getText().equals("P")) {//rotate the board
+						game = new ChessGame();
+						toPlayGame = new PgnReader();
+					}
+
+					if (key.getText().equals("x")) {
+						labelRef.setText(OpeningsSources.stringPGNname);
+					}
+
+					if (key.getText().equals("o")) {
+						System.out.println("You pressed o");
+
+						String FENstring;
+						Button btnNumber = new Button("Choose");
+						TextInputDialog dialogoNumber = new TextInputDialog();
+
+						dialogoNumber.setTitle("Entrar com número da variante2");
+						dialogoNumber.setHeaderText("Entrar com número da variante3");
+						dialogoNumber.setContentText("Número:");
+
+						Optional<String> result = dialogoNumber.showAndWait();
+
+						if (!result.isPresent() || result.get().trim().isBlank()) {
+							//Do nothing
+						} else {
+							numVariante = result.get();
+							System.out.println("NumVar:#" + numVariante);
+							String stringPGNnumber = OpeningsSources.getOpeningPath(numVariante);
+							abertura01reader = new PgnReader(stringPGNnumber);
+							actualMove = 0;
+							bMenosMenos();
+						}
+					}
 				}
-				
-				if (key.getText().equals("o")) {
-					System.out.println("You pressed o");
-					
-					String FENstring;
-				    Button btnNumber = new Button("Choose");
-		            TextInputDialog dialogoNumber = new TextInputDialog();
-
-		            dialogoNumber.setTitle("Entrar com número da variante2");
-		            dialogoNumber.setHeaderText("Entrar com número da variante3");
-		            dialogoNumber.setContentText("Número:");
-		            
-		            Optional<String> result = dialogoNumber.showAndWait();
-
-		            if (!result.isPresent() || result.get().trim().isBlank()) {
-		            	//Do nothing
-		            } else {
-		            	numVariante = result.get();
-				        System.out.println("NumVar:#" + numVariante);
-				        String stringPGNnumber = OpeningsSources.getOpeningPath(numVariante);
-						abertura01reader = new PGNreader(stringPGNnumber);
-						actualMove=0;
-						bMenosMenos();
-		            }
-				}			
 			}
-				keyReleased=false;
-				
-			});	
+
+		keyReleased=false;
+
+		});
 			
 		keyReleased=true;
-		}
+	}
 	
 
 
@@ -441,11 +439,11 @@ public class ConstructChessBoard {
 			// System.out.println("VALID in: " + (colIndex + 1) + " And: " + (8 -
 			// rowIndex));
 			boardGUI.movePieceInBoardASCII(mousePressedColumn, mousePressedRow, mouseReleasedColumn, mouseReleasedRow,
-					boardModel.getBoardASCII());
+					FENProcessor.getBoardASCII());
 
-			boardModel.printBoardASCII();
+			FENProcessor.printBoardASCII();
 			boardGUI.drawEmptyBoard();
-			boardGUI.refreshBoardImage(boardModel.getBoardASCII());
+			boardGUI.refreshBoardImage(FENProcessor.getBoardASCII());
 			
 			//if (boardGUI.getIfNeedToRotateTheBoard()&&(boardGUI.getAngleToRotateTheBoard()==0)) boardGUI.rotateTheBoard(); 
 		}

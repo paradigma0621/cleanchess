@@ -1,23 +1,13 @@
 package paradigma.cleanchess.model;
 
-import paradigma.cleanchess.model.entity.Square;
-
 import static java.lang.Character.getNumericValue;
 
-public class BoardModel {
-	private char[][] charFEN;
-	private char[][] parametersFEN;
-	private char[] boardASCII;
+public class FenProcessor {
+	private final char[][] charFEN = new char[10][9];
+	private final char[][] parametersFEN = new char[7][7];
+	private final char[] boardASCII = new char[89];
     
-	public BoardModel() {
-		boardASCII = new char[89];
-	}
-
 	public void passFENtoLines(String stringFEN) {
-
-		charFEN = new char[10][9];
-		parametersFEN = new char[7][7];
-
 		String[] sTemp = stringFEN.split("/");
 		String[] strLastLineAndParameters = sTemp[7].split(" "); // the last line of the FEN doesn't has the "/", so I
 									// store the last line and the parameters of the
@@ -78,10 +68,6 @@ public class BoardModel {
 		return (currentCharacter >= '1') && (currentCharacter <= '8');
 	}
 
-	public char[][] getParametersFEN() {
-		return parametersFEN;
-	}
-	
 	public char[] getBoardASCII() {
 		return boardASCII;
 	}

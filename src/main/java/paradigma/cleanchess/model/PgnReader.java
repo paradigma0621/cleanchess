@@ -8,37 +8,40 @@ import paradigma.cleanchess.model.entity.Square;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
 
-public class PGNreader {
-	PGNReader reader = null;
-    PGNWriter writer = null;
-    ChessGame game = null;
-    History history = null;
+public class PgnReader {
+	PGNReader reader;
+    PGNWriter writer;
+    ChessGame game;
+    History history;
    
-    public PGNreader() {  //When starts a new game and doesn't specify the file name address
-           	 this.game = new ChessGame();
-     	     this.history = game.getHistory();	
+    public PgnReader() {  //When starts a new game and doesn't specify the file name address
+		 this.game = new ChessGame();
+		 this.history = game.getHistory();
     }
     
-  public PGNreader(String stringPGNname) { 
-    
-    try {
-       //establish the reader object
-       reader = new PGNReader(new FileReader(new File(stringPGNname)));
+	public PgnReader(String stringPGNname) {
 
-	 //read in the first game in the file
-	 game = (ChessGame) reader.readGame();
-	// this.game = game;
-	    history = game.getHistory();
-	// displayPGN(game);
-     //displayLastPosition(game);
-      //displayStats(game);
+		try {
+			URI uri = new URI(stringPGNname);
+			File file = new File(uri);
+			FileReader fileReader = new FileReader(file);
+			reader = new PGNReader(fileReader);
 
-    }
-    catch (Exception e) {
-       System.err.println(e);
-    }
- }
+		 //read in the first game in the file
+		 game = (ChessGame) reader.readGame();
+		// this.game = game;
+			history = game.getHistory();
+		// displayPGN(game);
+		 //displayLastPosition(game);
+		  //displayStats(game);
+
+		}
+		catch (Exception e) {
+		   System.err.println(e);
+		}
+ 	}
 
     public int getHistorySize() {
     	return game.getHistory().size();
@@ -76,18 +79,18 @@ public class PGNreader {
  public static void displayPGN (ChessGame game) {
     PGNWriter writer = null;
     try {
-       writer = new PGNWriter(System.out);
+		writer = new PGNWriter(System.out);
 
-       //writer.setColumnWidth(60);
-	 writer.setIndentVariations(true);
-	 writer.setIndentComments(true);
-	 //writer.setAnnotationGlyphStyle(PGNWriter.NUMERIC_GLYPH);
-	 //writer.exportVariations(false);
-	 //writer.exportComments(false);
+		//writer.setColumnWidth(60);
+		writer.setIndentVariations(true);
+		writer.setIndentComments(true);
+		//writer.setAnnotationGlyphStyle(PGNWriter.NUMERIC_GLYPH);
+		//writer.exportVariations(false);
+		//writer.exportComments(false);
 
-	 System.out.println("PGN------------------------");
-	 writer.writeGame(game);
-	 System.out.println();
+		System.out.println("PGN------------------------");
+		writer.writeGame(game);
+		System.out.println();
     }
     catch (IOException e) {
        System.err.println(e);

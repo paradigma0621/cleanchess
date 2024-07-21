@@ -1,9 +1,9 @@
 package paradigma.cleanchess.model.entity;
 
-import paradigma.cleanchess.model.BoardModel;
+import paradigma.cleanchess.model.FenProcessor;
 
 public class Square {
-	private BoardModel board;
+	private FenProcessor board;
 	private String sqAlgebric;
 	private int sqInt;
 	private Line line;
@@ -12,6 +12,7 @@ public class Square {
    
 	public Square(String sqAlgebric) {
 		this.column = new Column();
+		this.line = new Line();
 		this.sqAlgebric = sqAlgebric;
 
 		String columnStr = sqAlgebric.substring(0, 1);
@@ -21,7 +22,7 @@ public class Square {
 		line.setLineStr(lineStr);
 	}
 
-	public Square(BoardModel board) {
+	public Square(FenProcessor board) {
 		this.board = board;
 	}
 
