@@ -1,6 +1,7 @@
 package paradigma0621.cleanchess.model;
 
-@SuppressWarnings("all")
+import paradigma0621.cleanchess.model.entity.Square;
+
 public class BoardModel {
 
 	private Square squares[];

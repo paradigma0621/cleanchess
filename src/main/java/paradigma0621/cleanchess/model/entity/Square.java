@@ -1,23 +1,22 @@
-package paradigma0621.cleanchess.model;
+package paradigma0621.cleanchess.model.entity;
 
-//import groupId.artifactId.
-@SuppressWarnings("all")
-public class Square { // extends Application {
+import paradigma0621.cleanchess.model.BoardModel;
+
+public class Square {
 	// private Casa casas[64];
 	private BoardModel board;
 	private String sqAlgebric;
 	private int sqInt;
 	private Line line;
 	private Column column;
-   	private ColorSquare colorSq;
+   	private ColorSquareEnum colorSq;
    
 	public Square() {
 		Line line = new Line();
 		Column column = new Column();
 	}
 	
-	public  Square(String sqAlgebric) {
-		
+	public Square(String sqAlgebric) {
  		Line line = new Line();
 		Column column = new Column();
 		this.line = line;
@@ -64,8 +63,6 @@ public class Square { // extends Application {
 		return sqAlgebric;
 	}
 
-
-
 	public void setSqInt(int sqInt) {
 		this.sqInt = sqInt;
 
@@ -78,7 +75,6 @@ public class Square { // extends Application {
 		line.setLineStr(lineStr);
 		line.setLineInt(Integer.valueOf(lineStr));
 		System.out.println("debug: columnStr: " + column.getColumnStr() + " - lineStr: " + line.getLineStr());
-
 	}
 
 	public int getSqInt() {
@@ -86,19 +82,19 @@ public class Square { // extends Application {
 	}
 
 	public void setColorSquare() {
-	    System.out.print("metodo setColorSquare sendo executado");	    
-	    if (((column.getColumnInt()+line.getLineInt())%2) == 0) {
-		System.out.println("c: " + column + " l: " + line+ " é par=preta");
-		colorSq = ColorSquare.BLACK_SQUARE;
-	    }
-	    
-	    if (((column.getColumnInt()+line.getLineInt())%2) == 1) {
-		System.out.println("c: " + column + " l: " + line+ " é ímpar=branca");
-		colorSq = ColorSquare.WHITE_SQUARE;
-	    }
-       }
+		System.out.print("metodo setColorSquare sendo executado");
+		if (((column.getColumnInt() + line.getLineInt()) % 2) == 0) {
+			System.out.println("c: " + column + " l: " + line + " é par=preta");
+			colorSq = ColorSquareEnum.BLACK_SQUARE;
+		}
 
-    public ColorSquare getColorSquare() {
-	return colorSq;
+		if (((column.getColumnInt() + line.getLineInt()) % 2) == 1) {
+			System.out.println("c: " + column + " l: " + line + " é ímpar=branca");
+			colorSq = ColorSquareEnum.WHITE_SQUARE;
+		}
+	}
+
+    public ColorSquareEnum getColorSquare() {
+		return colorSq;
     }
 }

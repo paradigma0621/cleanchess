@@ -18,5 +18,6 @@ module groupId {
     opens groupId.artifactId.view to javafx.fxml;
     */
     opens paradigma0621.cleanchess.controller to javafx.fxml;
-  
+    exports paradigma0621.cleanchess.model.entity;
+
 }

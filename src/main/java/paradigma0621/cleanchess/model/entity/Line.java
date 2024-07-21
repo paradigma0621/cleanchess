@@ -1,8 +1,6 @@
-package paradigma0621.cleanchess.model;
+package paradigma0621.cleanchess.model.entity;
 
-//import groupId.artifactId.
-@SuppressWarnings("all")
-public class Line { // extends Application {
+public class Line {
 	// private Casa casas[64];
     //  private Square sq;
 	private int lineInt, columnInt;

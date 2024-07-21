@@ -85,7 +85,9 @@ public class ConstructChessBoard {
 	public ConstructChessBoard() {
 		boardModel = new BoardModel();
 		//System.out.println("criou instancias que eu vou usar");
-		abertura01reader = new PGNreader("/home/lucas/Documentos/xadrez/java/Memorize.IntermidiareBuild/resources-aberturas.pgn/Peao_Dama/DefesaEslava_CAB_e_CAP/01_DefesaEslava_VarianteMaisImportante(a)_FonteXB.pgn");
+		String pgnExamplePath =
+				getClass().getResource("/pgn/01_DefesaEslava_VarianteMaisImportante(b)_FonteXB.pgn").toExternalForm();
+		abertura01reader = new PGNreader(pgnExamplePath);
 	}
 	
 	public void initialize() {

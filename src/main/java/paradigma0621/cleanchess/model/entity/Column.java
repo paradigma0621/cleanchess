@@ -1,4 +1,4 @@
-package paradigma0621.cleanchess.model;
+package paradigma0621.cleanchess.model.entity;
 
 //import groupId.artifactId.
 @SuppressWarnings("all")

@@ -3,32 +3,27 @@ import ictk.boardgame.*;
 import ictk.boardgame.io.*;
 import ictk.boardgame.chess.*;
 import ictk.boardgame.chess.io.*;
+import paradigma0621.cleanchess.model.entity.Square;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class PGNreader {
-	
-	
-	
    // PGNReader reader = null;
 	PGNReader reader = null;
     PGNWriter writer = null;
     ChessGame game = null;
-    History history =null;
+    History history = null;
    
     public PGNreader() {  //When starts a new game and doesn't specify the file name address
-        
            	 this.game = new ChessGame();
      	     this.history = game.getHistory();	
-        
     }
     
   public PGNreader(String stringPGNname) { 
     
     try {
-
        //establish the reader object
        reader = new PGNReader(new FileReader(new File(stringPGNname)));
 
@@ -153,8 +148,8 @@ public String moveMaker(char[] moveChar, ChessGame game) {
     history = game.getHistory();
 	// board = game.getBoard();
 	 
-    Square sqOrigin = new Square(String.valueOf(moveChar[0])+String.valueOf(moveChar[1]));
-    Square sqDestiny = new Square(String.valueOf(moveChar[2])+String.valueOf(moveChar[3]));
+    paradigma0621.cleanchess.model.entity.Square sqOrigin = new paradigma0621.cleanchess.model.entity.Square(String.valueOf(moveChar[0])+String.valueOf(moveChar[1]));
+    paradigma0621.cleanchess.model.entity.Square sqDestiny = new Square(String.valueOf(moveChar[2])+String.valueOf(moveChar[3]));
     /*stem.out.println("sqOrigin column: " + sqOrigin.getColumn().getColumnInt());
     System.out.println("sqOrigin line: " + sqOrigin.getLine().getLineInt());
 
