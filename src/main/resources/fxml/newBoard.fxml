@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+
+<GridPane fx:id="bigGrid" alignment="TOP_CENTER" minWidth="1000.0" onKeyPressed="#pressedAkey" onKeyReleased="#releasedTheKey" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="paradigma0621.cleanchess.controller.ConstructChessBoard">
+   <columnConstraints>
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints fx:id="gridPaneGeral_Row0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" />
+      <RowConstraints fx:id="gridPaneGeral_Row1" maxHeight="100.0" minHeight="100.0" prefHeight="100.0" valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints fx:id="gridPaneGeral_Row2" fillHeight="false" maxHeight="2000.0" minHeight="10.0" valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints fx:id="gridPaneGeral_Row3" fillHeight="false" maxHeight="100.0" minHeight="10.0" prefHeight="100.0" valignment="TOP" />
+      <RowConstraints fx:id="gridPaneGeral_Row4" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+    <MenuBar fx:id="menuBar">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem mnemonicParsing="false" text="New" />
+            <MenuItem mnemonicParsing="false" text="Open…" />
+            <Menu mnemonicParsing="false" text="Open Recent" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Close" />
+            <MenuItem mnemonicParsing="false" text="Save" />
+            <MenuItem mnemonicParsing="false" text="Save As…" />
+            <MenuItem mnemonicParsing="false" text="Revert" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Preferences…" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Quit" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Undo" />
+            <MenuItem mnemonicParsing="false" text="Redo" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Cut" />
+            <MenuItem mnemonicParsing="false" text="Copy" />
+            <MenuItem mnemonicParsing="false" text="Paste" />
+            <MenuItem mnemonicParsing="false" text="Delete" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Select All" />
+            <MenuItem mnemonicParsing="false" text="Unselect All" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+    <AnchorPane fx:id="anchorPane" cacheShape="false" centerShape="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="758.0" style="-fx-background-color: #ffffff;" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <children>
+            <Pane fx:id="panePano" cacheShape="false" centerShape="false" prefHeight="100.0" prefWidth="490.0">
+               <children>
+                  <Button fx:id="trabalhaTabul" layoutX="14.0" layoutY="21.0" mnemonicParsing="false" onAction="#centralizaTabuleiro" text="trabalhaTabul" />
+               </children>
+            </Pane>
+            <Label fx:id="labelRef" layoutX="10.0" layoutY="10.0" text="Label" />
+            <Button fx:id="bbMais" layoutX="605.0" layoutY="13.0" mnemonicParsing="false" onAction="#bMais" text="b+" />
+            <Button fx:id="bbMenos" layoutX="605.0" layoutY="50.0" mnemonicParsing="false" onAction="#bMenos" text="b-" />
+            <Label fx:id="labelAlvo" layoutX="706.0" layoutY="32.0" text="Label" />
+            <Button fx:id="botaoAlvo" layoutX="682.0" layoutY="63.0" mnemonicParsing="false" onAction="#mudaTextoDaLabelAlvo" text="Button" />
+            <Button fx:id="bbMenosMenos" layoutX="557.0" layoutY="59.0" mnemonicParsing="false" onAction="#bMenosMenos" text="b--" />
+      </children>
+    </AnchorPane>
+      <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#clickGrid" onMousePressed="#clickPressed" onMouseReleased="#clickReleased" prefHeight="770.0" prefWidth="770.0" style="-fx-border-color: #000000; -fx-border-width: 0;" GridPane.rowIndex="2" />
+   </children>
+</GridPane>
