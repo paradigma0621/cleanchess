@@ -1,4 +1,4 @@
-package paradigma0621.cleanchess.model;
+package paradigma.cleanchess.model;
 
 ///import groupId.artifactId.controller.ConstructChessBoard;
 

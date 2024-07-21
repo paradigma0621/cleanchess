@@ -1,4 +1,4 @@
-package paradigma0621.cleanchess.controller;
+package paradigma.cleanchess.controller;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;

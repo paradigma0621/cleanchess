@@ -1,16 +1,16 @@
-package paradigma0621.cleanchess.controller;
+package paradigma.cleanchess.controller;
 
 
 
 import java.util.Optional;
 
-import paradigma0621.cleanchess.model.BoardModel;
-import paradigma0621.cleanchess.model.PGNreader;
-import paradigma0621.cleanchess.model.ValidMoveAnalyser;
-import paradigma0621.cleanchess.model.PlayAgainstEngine;
-import paradigma0621.cleanchess.view.GUIboard;
+import paradigma.cleanchess.model.BoardModel;
+import paradigma.cleanchess.model.PGNreader;
+import paradigma.cleanchess.model.PlayAgainstEngine;
+import paradigma.cleanchess.view.GUIboard;
+import paradigma.cleanchess.model.ValidMoveAnalyser;
 import ictk.boardgame.chess.ChessGame;
-import paradigma0621.cleanchess.model.OpeningsSources;
+import paradigma.cleanchess.model.OpeningsSources;
 import javafx.fxml.FXML;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
@@ -175,7 +175,6 @@ public class ConstructChessBoard {
 
 		boardGUI.drawEmptyBoard();
 		boardGUI.refreshBoardImage(boardModel.getBoardASCII());
-
 	}
 
 	/*
@@ -275,7 +274,7 @@ public class ConstructChessBoard {
 					actualMove++;
 					//String FENatual=abertura01reader.displayNextPosition(actualMove-1);
 					//System.out.println("FEN processada: " + FENatual);
-					System.out.println("actualMove atual desde o começo: "+actualMove);
+					System.out.println("actualMove atual desde o começo: " + actualMove);
 					String FENatual;
 					if (actualMove==0) {
 						 FENatual = "2kr3r/ppp2ppp/8/2bqP3/3nBBb1/8/PPPN2PP/R3KQ1R b KQ - 0 1";

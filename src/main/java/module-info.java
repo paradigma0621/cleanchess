@@ -8,16 +8,13 @@ module groupId {
     requires ictk;
 	requires javafx.graphics;
     
-    opens paradigma0621.cleanchess to javafx.fxml;
-    exports paradigma0621.cleanchess;
-    exports paradigma0621.cleanchess.controller;
-    exports paradigma0621.cleanchess.view;
-    exports paradigma0621.cleanchess.model;
+    opens paradigma.cleanchess to javafx.fxml;
+    exports paradigma.cleanchess;
+    exports paradigma.cleanchess.controller;
+    exports paradigma.cleanchess.view;
+    exports paradigma.cleanchess.model;
     
-  /*  opens groupId.artifactId.model to javafx.fxml;
-    opens groupId.artifactId.view to javafx.fxml;
-    */
-    opens paradigma0621.cleanchess.controller to javafx.fxml;
-    exports paradigma0621.cleanchess.model.entity;
+    opens paradigma.cleanchess.controller to javafx.fxml;
+    exports paradigma.cleanchess.model.entity;
 
 }

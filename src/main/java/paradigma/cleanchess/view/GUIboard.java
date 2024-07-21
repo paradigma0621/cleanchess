@@ -1,6 +1,6 @@
-package paradigma0621.cleanchess.view;
+package paradigma.cleanchess.view;
 
-import paradigma0621.cleanchess.model.BoardModel;
+import paradigma.cleanchess.model.BoardModel;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;

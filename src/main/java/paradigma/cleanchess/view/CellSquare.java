@@ -1,4 +1,4 @@
-package paradigma0621.cleanchess.view;
+package paradigma.cleanchess.view;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

@@ -1,4 +1,4 @@
-package paradigma0621.cleanchess.model.entity;
+package paradigma.cleanchess.model.entity;
 
 @SuppressWarnings("all")
 public enum PiecesEnum {

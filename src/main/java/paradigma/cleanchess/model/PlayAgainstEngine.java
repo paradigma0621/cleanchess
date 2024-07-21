@@ -1,4 +1,4 @@
-package paradigma0621.cleanchess.model;
+package paradigma.cleanchess.model;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,9 +6,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Scanner;
-
-import ictk.boardgame.chess.ChessBoard;
-import ictk.boardgame.chess.ChessMove;
 
 
 public class PlayAgainstEngine {

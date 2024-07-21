@@ -1,9 +1,9 @@
-package paradigma0621.cleanchess.controller;
+package paradigma.cleanchess.controller;
 
 //import javafx.scene.Scene;
 //import javafx.stage.Stage;
 
-import paradigma0621.cleanchess.MainApp;
+import paradigma.cleanchess.MainApp;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

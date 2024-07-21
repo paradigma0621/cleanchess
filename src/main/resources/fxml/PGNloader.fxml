@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="vbox" alignment="TOP_CENTER" prefHeight="957.0" prefWidth="1028.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="paradigma0621.cleanchess.controller.PGNloader">
+<VBox fx:id="vbox" alignment="TOP_CENTER" prefHeight="957.0" prefWidth="1028.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="paradigma.cleanchess.controller.PGNloader">
   <children>
     <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
       <menus>

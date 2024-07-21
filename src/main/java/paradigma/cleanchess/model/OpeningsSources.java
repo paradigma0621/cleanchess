@@ -1,12 +1,12 @@
-package paradigma0621.cleanchess.model;
+package paradigma.cleanchess.model;
 
 public class OpeningsSources {
 	public static String getOpeningPath(String numVariant) {
 		String stringPGNname;
 
 		if (numVariant.equals("001")) {
-			stringPGNname = "/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/DefesaDoisCavalos/DefesaDoisCavalos.Var.01-Ataque_Fegatello.A.pgn";
-			System.out.println("001 de variante: DefesaDoisCavalos/DefesaDoisCavalos.Var.01-Ataque_Fegatello.A");
+			stringPGNname = "/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/GiuocoPiano/01-GiuocoPiano-4....Cf6.pgn";
+			System.out.println("001 de variante: GiuocoPiano #1");
 			return stringPGNname;
 		}
 

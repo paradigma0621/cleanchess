@@ -1,4 +1,4 @@
-package paradigma0621.cleanchess.controller;
+package paradigma.cleanchess.controller;
 
 
 
@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import paradigma0621.cleanchess.MainApp;
+import paradigma.cleanchess.MainApp;
 //import groupId.artifactId.model.Board;
 
 

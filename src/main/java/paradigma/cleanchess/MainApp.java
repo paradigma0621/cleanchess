@@ -1,8 +1,8 @@
-package paradigma0621.cleanchess;
+package paradigma.cleanchess;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import paradigma0621.cleanchess.controller.PGNsCenter;
+import paradigma.cleanchess.controller.PGNsCenter;
 
 @SuppressWarnings("all")
 public class MainApp extends Application {
@@ -17,12 +17,10 @@ public class MainApp extends Application {
 		} catch (Exception e) {
 			 System.out.println("Ocorreu o erro dentro start: " + e.getMessage());
 			 }
-
     }
 
     public static void main(String[] args) {
         launch(args);
     }
     
-    //emacs lsp cannot evaluate because of "java.lang.IllegalStateException": Project cannot be found
 }

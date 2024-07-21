@@ -1,14 +1,13 @@
-package paradigma0621.cleanchess.model.entity;
+package paradigma.cleanchess.model.entity;
+
+import static java.lang.Character.getNumericValue;
 
 public class Line {
-	// private Casa casas[64];
-    //  private Square sq;
-	private int lineInt, columnInt;
-	private String lineStr, columnStr;
+	private int lineInt;
+	private String lineStr;
    
 	public Line() {
 	}
-
 
 	public int getLineInt() {
 		return lineInt;
@@ -16,8 +15,12 @@ public class Line {
 
 	public void setLineInt(int lineInt) {
 		this.lineInt = lineInt;
-		char c = (char) (lineInt + 48);
+		char c = getCharacterValue(lineInt);
 		this.lineStr = String.valueOf(c);
+	}
+
+	private char getCharacterValue(int lineInt) {
+		return (char) (lineInt + 48);
 	}
 
 	public String getLineStr() {
@@ -28,7 +31,6 @@ public class Line {
 		this.lineStr = lineStr;
 		
 		char c = lineStr.charAt(0);
-		this.lineInt = ((int)(c)) - 48;
-		System.out.println("line int setado para: "+String.valueOf(lineInt));
+		this.lineInt = getNumericValue(c);
 	}
 }
