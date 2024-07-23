@@ -32,7 +32,7 @@ public class PgnReader {
 		 //read in the first game in the file
 		 game = (ChessGame) reader.readGame();
 		// this.game = game;
-			history = game.getHistory();
+		history = game.getHistory();
 		// displayPGN(game);
 		 //displayLastPosition(game);
 		  //displayStats(game);
@@ -46,7 +46,12 @@ public class PgnReader {
     public int getHistorySize() {
     	return game.getHistory().size();
     }
-    
+
+	public String getFEN() {
+		ChessBoardNotation fen = new FEN();
+		return fen.boardToString(game.getBoard());
+	}
+
  /** gather and display some use(less) statistics about the game */
  public static void displayStats (ChessGame game) {
     ChessMoveNotation san = new SAN();
@@ -64,13 +69,13 @@ public class PgnReader {
 
  /** displays the last board position in FEN notation
   */
- public static void displayLastPosition (ChessGame game) {
+ public static String displayLastPosition(ChessGame game) {
     ChessBoardNotation fen = new FEN();
 
        game.getHistory().goToEnd();
        System.out.println("Last board position--------");
        System.out.println("FEN: " + fen.boardToString(game.getBoard()));
-	 System.out.println();
+	 return fen.boardToString(game.getBoard());
  }
 
  /** writes the game to STDOUT.  To modify the game presentation
@@ -395,4 +400,5 @@ System.out.println("Variante: "+san.moveToString(move));
        e.printStackTrace();
     }
  }
+
 }

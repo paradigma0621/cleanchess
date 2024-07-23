@@ -1,13 +1,14 @@
 package paradigma.cleanchess.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import paradigma.cleanchess.model.FenProcessor;
-import paradigma.cleanchess.model.PgnReader;
-import paradigma.cleanchess.model.PlayAgainstEngine;
+
+import ictk.boardgame.io.GameReader;
+import paradigma.cleanchess.model.*;
 import paradigma.cleanchess.view.GuiBoard;
-import paradigma.cleanchess.model.ValidMoveAnalyser;
 import ictk.boardgame.chess.ChessGame;
-import paradigma.cleanchess.model.OpeningsSources;
 import javafx.fxml.FXML;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
@@ -75,6 +76,9 @@ public class ConstructChessBoard {
 	private boolean keyReleased=true;
 	private ChessGame game;
 	private PgnReader toPlayGame;
+	private PgnReader problemToSolve;
+	private Integer integerProblemToSolve;
+	private Map<Integer, List<String>> gameMap;
 	
 	public ConstructChessBoard() {
 		FENProcessor = new FenProcessor();
@@ -341,7 +345,7 @@ public class ConstructChessBoard {
 					}
 
 
-					if (key.getText().equals("P")) {//rotate the board
+					if (key.getText().equals("P")) {
 						game = new ChessGame();
 						toPlayGame = new PgnReader();
 					}
@@ -370,9 +374,49 @@ public class ConstructChessBoard {
 							System.out.println("NumVar:#" + numVariante);
 							String stringPGNnumber = OpeningsSources.getOpeningPath(numVariante);
 							abertura01reader = new PgnReader(stringPGNnumber);
-							actualMove = 0;
-							bMenosMenos();
+							//actualMove = 0;
+							String fen = abertura01reader.getFEN();
+							boardGUI.drawBoard(fen);
 						}
+
+					}
+
+					if (key.getText().equals("l")) {//mate em 3
+						String filePath = "/home/lucas/Documentos/xadrez/problemasDeMate/polgar/mates.pgn";
+						gameMap = PgnProblemListLoader.loadPgnFile(filePath);
+					}
+
+					if (key.getText().equals("j")) {//mate em 3
+						Map<Integer, List<String>> gameMapToSave = new HashMap<>();
+						//gameMapToSave.put(1, gameMap.get(1));
+					//	gameMapToSave.put(2, gameMap.get(3));
+					//	gameMapToSave.put(3, gameMap.get(5));
+
+						Button btnNumber = new Button("Choose");
+						TextInputDialog dialogoNumber = new TextInputDialog();
+
+						dialogoNumber.setTitle("Entrar com número do problema");
+						dialogoNumber.setHeaderText("Entrar com número do problema3");
+						dialogoNumber.setContentText("Número:");
+
+						Optional<String> result = dialogoNumber.showAndWait();
+
+						if (!result.isPresent() || result.get().trim().isBlank()) {
+							//Do nothing
+						} else {
+							numVariante = result.get();
+							System.out.println("NumVar:#" + numVariante);
+							gameMapToSave.put(1, gameMap.get(Integer.parseInt(numVariante)));
+
+							String filePathToSave = "/home/lucas/Documentos/xadrez/problemasDeMate/polgar/matesJogando.pgn";
+							PgnProblemListSaver.savePgnFile(filePathToSave, gameMapToSave);
+
+							String stringPGNnumber = "file:" + filePathToSave;
+							problemToSolve = new PgnReader(stringPGNnumber);
+							String fen = problemToSolve.getFEN();
+							boardGUI.drawBoard(fen);
+						}
+
 					}
 				}
 			}
