@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import ictk.boardgame.io.GameReader;
 import paradigma.cleanchess.model.*;
 import paradigma.cleanchess.view.GuiBoard;
 import ictk.boardgame.chess.ChessGame;
@@ -71,7 +70,7 @@ public class ConstructChessBoard {
 	private GuiBoard boardGUI;
 	private int mousePressedColumn, mousePressedRow, mouseReleasedColumn, mouseReleasedRow;
 	private int actualMove=0;
-	private PgnReader abertura01reader;
+	private PgnReader actualPgnPlaying;
 	private String numVariante;
 	private boolean keyReleased=true;
 	private ChessGame game;
@@ -79,13 +78,15 @@ public class ConstructChessBoard {
 	private PgnReader problemToSolve;
 	private Integer integerProblemToSolve;
 	private Map<Integer, List<String>> gameMap;
-	
+	private boolean isOpeningPlaying = false;
+	private String whoWins;
+
 	public ConstructChessBoard() {
 		FENProcessor = new FenProcessor();
 		//System.out.println("criou instancias que eu vou usar");
 		String pgnExamplePath =
 				getClass().getResource("/pgn/01_DefesaEslava_VarianteMaisImportante(b)_FonteXB.pgn").toExternalForm();
-		abertura01reader = new PgnReader(pgnExamplePath);
+		actualPgnPlaying = new PgnReader(pgnExamplePath);
 		System.out.println("aqui2");
 	}
 	
@@ -129,7 +130,7 @@ public class ConstructChessBoard {
 	}
 
 	public void bMais() {
-		String FENatual = abertura01reader.displayNextPosition(actualMove);
+		String FENatual = actualPgnPlaying.displayNextPosition(actualMove);
 		FENProcessor.passFENtoLines(FENatual); // ex 30 - white
 		FENProcessor.decriptFEN();
 		//boardModel.printBoardASCII();
@@ -142,7 +143,7 @@ public class ConstructChessBoard {
 	
 	public void bMenos() {
 		
-		String FENatual=abertura01reader.displayNextPosition(actualMove);
+		String FENatual= actualPgnPlaying.displayNextPosition(actualMove);
 		
 		FENProcessor.passFENtoLines(FENatual); // ex 30 - white
 
@@ -244,15 +245,54 @@ public class ConstructChessBoard {
 
 		bigGrid.addEventHandler(KeyEvent.KEY_RELEASED, key -> {
 			if (keyReleased) {
+				boolean showCtrlMessage = true;
 				if (key.isControlDown()) {
-					labelRef.setText("You pressed control + " + key.getCode());
+
+					if (key.getCode() == key.getCode().LEFT) {
+						System.out.println("You pressed left arrow...");
+						if (actualMove > 0) actualMove--;
+
+						String FENatual = actualPgnPlaying.displayNextPosition(actualMove - 1); //actual move
+						//starts at 0 in abertura01reader, but here whe have the initial
+						//value of actualMove=1
+						boardGUI.drawBoard(FENatual);
+						showCtrlMessage = false;
+					}
+					if (key.getCode() == key.getCode().RIGHT) {
+						System.out.println("You pressed right arrow...");
+						if (actualMove < actualPgnPlaying.getHistorySize()) actualMove++;
+
+						String FENatual = actualPgnPlaying.displayNextPosition(actualMove - 1); //actual move
+						//starts at 0 in abertura01reader, but here whe have the initial
+						//value of actualMove=1
+						boardGUI.drawBoard(FENatual);
+						showCtrlMessage = false;
+					}
+					if (key.getCode() == key.getCode().F2) {
+						System.out.println("You pressed command to delete game in pgn...");
+
+						System.out.println("DELETING NumVar:#" + numVariante);
+						gameMap.remove(numVariante);
+
+						String filePathToSave = "/home/lucas/Documentos/xadrez/problemasDeMate/polgar/matesJogandoDELETANDO.pgn";
+						PgnProblemListSaver.savePgnFile(filePathToSave, gameMap);
+
+						String stringPGNnumber = "file:" + filePathToSave;
+						problemToSolve = new PgnReader(stringPGNnumber);
+						String fen = problemToSolve.getFEN();
+						boardGUI.drawBoard(fen);
+						actualPgnPlaying = problemToSolve;
+						isOpeningPlaying = false;
+						labelRef.setText("deletou game: " + numVariante);
+					}
+					if (showCtrlMessage) labelRef.setText("You pressed control + " + key.getCode());
 				} else {
 					labelRef.setText("");
 					if (key.getText().equals("+")) {
 						System.out.println("You pressed +...");
-						if (actualMove < abertura01reader.getHistorySize()) actualMove++;
+						if (actualMove < actualPgnPlaying.getHistorySize()) actualMove++;
 
-						String FENatual = abertura01reader.displayNextPosition(actualMove - 1); //actual move
+						String FENatual = actualPgnPlaying.displayNextPosition(actualMove - 1); //actual move
 						//starts at 0 in abertura01reader, but here whe have the initial
 						//value of actualMove=1
 						boardGUI.drawBoard(FENatual);
@@ -262,7 +302,7 @@ public class ConstructChessBoard {
 						System.out.println("You pressed -...");
 						if (actualMove > 0) actualMove--;
 
-						String FENatual = abertura01reader.displayNextPosition(actualMove - 1); //actual move
+						String FENatual = actualPgnPlaying.displayNextPosition(actualMove - 1); //actual move
 						//starts at 0 in abertura01reader, but here whe have the initial
 						//value of actualMove=1
 						boardGUI.drawBoard(FENatual);
@@ -351,7 +391,11 @@ public class ConstructChessBoard {
 					}
 
 					if (key.getText().equals("x")) {
-						labelRef.setText(OpeningsSources.stringPGNname);
+						if (isOpeningPlaying)
+							labelRef.setText(OpeningsSources.stringPGNname);
+						else {
+							labelRef.setText("Problem: " + numVariante + " who mate: " + getWhoMates());
+						}
 					}
 
 					if (key.getText().equals("o")) {
@@ -373,16 +417,17 @@ public class ConstructChessBoard {
 							numVariante = result.get();
 							System.out.println("NumVar:#" + numVariante);
 							String stringPGNnumber = OpeningsSources.getOpeningPath(numVariante);
-							abertura01reader = new PgnReader(stringPGNnumber);
+							actualPgnPlaying = new PgnReader(stringPGNnumber);
 							//actualMove = 0;
-							String fen = abertura01reader.getFEN();
+							String fen = actualPgnPlaying.getFEN();
 							boardGUI.drawBoard(fen);
+							isOpeningPlaying = true;
 						}
 
 					}
 
 					if (key.getText().equals("l")) {//mate em 3
-						String filePath = "/home/lucas/Documentos/xadrez/problemasDeMate/polgar/mates.pgn";
+						String filePath = "/home/lucas/Documentos/xadrez/problemasDeMate/polgar/retiradosDoLivroCHESS_mate_em_1.pgn";
 						gameMap = PgnProblemListLoader.loadPgnFile(filePath);
 					}
 
@@ -415,8 +460,9 @@ public class ConstructChessBoard {
 							problemToSolve = new PgnReader(stringPGNnumber);
 							String fen = problemToSolve.getFEN();
 							boardGUI.drawBoard(fen);
+							actualPgnPlaying = problemToSolve;
+							isOpeningPlaying = false;
 						}
-
 					}
 				}
 			}
@@ -427,7 +473,10 @@ public class ConstructChessBoard {
 			
 		keyReleased=true;
 	}
-	
+
+	private String getWhoMates() {
+		return (actualPgnPlaying.getGame().getGameInfo().getEvent() + actualPgnPlaying.getGame().getGameInfo().getPlayers()[1]);
+	}
 
 
 	public void clickGrid(javafx.scene.input.MouseEvent event) {

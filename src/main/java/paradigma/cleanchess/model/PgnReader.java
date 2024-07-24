@@ -20,6 +20,10 @@ public class PgnReader {
 		 this.game = new ChessGame();
 		 this.history = game.getHistory();
     }
+
+	public ChessGame getGame() {
+		return game;
+	}
     
 	public PgnReader(String stringPGNname) {
 
