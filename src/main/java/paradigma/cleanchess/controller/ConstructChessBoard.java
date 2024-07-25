@@ -23,6 +23,8 @@ import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.TextInputDialog;
 
+import static paradigma.cleanchess.model.PgnProblemListLoader.loadPgnFile;
+
 public class ConstructChessBoard {
 	@FXML
 	private Label labelRef;
@@ -272,17 +274,20 @@ public class ConstructChessBoard {
 						System.out.println("You pressed command to delete game in pgn...");
 
 						System.out.println("DELETING NumVar:#" + numVariante);
-						gameMap.remove(numVariante);
+						gameMap.remove(Integer.parseInt(numVariante));
 
-						String filePathToSave = "/home/lucas/Documentos/xadrez/problemasDeMate/polgar/matesJogandoDELETANDO.pgn";
+						String filePathToSave = "/home/lucas/Documentos/xadrez/problemasDeMate/polgar/mateEm2_BCKP.pgn";
 						PgnProblemListSaver.savePgnFile(filePathToSave, gameMap);
 
-						String stringPGNnumber = "file:" + filePathToSave;
+						//load the file again
+						gameMap = loadPgnFile(filePathToSave);
+						loadOneChessProblem(numVariante);
+						/*String stringPGNnumber = "file:" + filePathToSave;
 						problemToSolve = new PgnReader(stringPGNnumber);
 						String fen = problemToSolve.getFEN();
-						boardGUI.drawBoard(fen);
-						actualPgnPlaying = problemToSolve;
-						isOpeningPlaying = false;
+						boardGUI.drawBoard(fen);*/
+						//actualPgnPlaying = problemToSolve;
+						//isOpeningPlaying = false;
 						labelRef.setText("deletou game: " + numVariante);
 					}
 					if (showCtrlMessage) labelRef.setText("You pressed control + " + key.getCode());
@@ -426,13 +431,13 @@ public class ConstructChessBoard {
 
 					}
 
-					if (key.getText().equals("l")) {//mate em 3
-						String filePath = "/home/lucas/Documentos/xadrez/problemasDeMate/polgar/retiradosDoLivroCHESS_mate_em_1.pgn";
-						gameMap = PgnProblemListLoader.loadPgnFile(filePath);
+					if (key.getText().equals("l")) {
+						String filePath = "/home/lucas/Documentos/xadrez/problemasDeMate/polgar/mateEm2_BCKP.pgn";
+						gameMap = loadPgnFile(filePath);
 					}
 
-					if (key.getText().equals("j")) {//mate em 3
-						Map<Integer, List<String>> gameMapToSave = new HashMap<>();
+					if (key.getText().equals("j")) {
+
 						//gameMapToSave.put(1, gameMap.get(1));
 					//	gameMapToSave.put(2, gameMap.get(3));
 					//	gameMapToSave.put(3, gameMap.get(5));
@@ -450,18 +455,7 @@ public class ConstructChessBoard {
 							//Do nothing
 						} else {
 							numVariante = result.get();
-							System.out.println("NumVar:#" + numVariante);
-							gameMapToSave.put(1, gameMap.get(Integer.parseInt(numVariante)));
-
-							String filePathToSave = "/home/lucas/Documentos/xadrez/problemasDeMate/polgar/matesJogando.pgn";
-							PgnProblemListSaver.savePgnFile(filePathToSave, gameMapToSave);
-
-							String stringPGNnumber = "file:" + filePathToSave;
-							problemToSolve = new PgnReader(stringPGNnumber);
-							String fen = problemToSolve.getFEN();
-							boardGUI.drawBoard(fen);
-							actualPgnPlaying = problemToSolve;
-							isOpeningPlaying = false;
+							loadOneChessProblem(numVariante);
 						}
 					}
 				}
@@ -472,6 +466,22 @@ public class ConstructChessBoard {
 		});
 			
 		keyReleased=true;
+	}
+
+	private void loadOneChessProblem(String numVariante) {
+		Map<Integer, List<String>> gameMapToSave = new HashMap<>();
+		System.out.println("NumVar:#" + numVariante);
+		gameMapToSave.put(1, gameMap.get(Integer.parseInt(numVariante)));
+
+		String filePathToSave = "/home/lucas/Documentos/xadrez/problemasDeMate/polgar/matesJogando.pgn";
+		PgnProblemListSaver.savePgnFile(filePathToSave, gameMapToSave);
+
+		String stringPGNnumber = "file:" + filePathToSave;
+		problemToSolve = new PgnReader(stringPGNnumber);
+		String fen = problemToSolve.getFEN();
+		boardGUI.drawBoard(fen);
+		actualPgnPlaying = problemToSolve;
+		isOpeningPlaying = false;
 	}
 
 	private String getWhoMates() {
