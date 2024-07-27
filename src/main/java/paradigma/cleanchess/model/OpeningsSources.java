@@ -13,7 +13,7 @@ public class OpeningsSources {
 		}
 
 		if (numVariant.equals("002")) {
-			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/01_RuyLopes/ruyLopes_2.B_Steinitz_Moderna .pgn";
+			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/01_RuyLopes/ruyLopes_2.B_Steinitz_Moderna.pgn";
 			return stringPGNname;
 		}
 
@@ -43,7 +43,7 @@ public class OpeningsSources {
 		}
 
 		if (numVariant.equals("008")) {
-			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/01_RuyLopes/ruyLopes_5.VarE.Defesa_Steinitz__VAriante_do_XadrezBasico.pgn";
+			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/01_RuyLopes/ruyLopes_5.VarE.Defesa_Steinitz__VAriante_do_MCAX_poremAdoXadrezBasicoEhMelhor_pg327.pgn";
 			return stringPGNname;
 		}
 

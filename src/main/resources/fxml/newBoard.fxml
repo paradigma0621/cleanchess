@@ -80,7 +80,7 @@
             <Button fx:id="bbMais" layoutX="605.0" layoutY="13.0" mnemonicParsing="false" onAction="#bMais" text="b+" />
             <Button fx:id="bbMenos" layoutX="605.0" layoutY="50.0" mnemonicParsing="false" onAction="#bMenos" text="b-" />
             <Label fx:id="labelAlvo" layoutX="706.0" layoutY="32.0" text="Label" />
-            <Button fx:id="botaoAlvo" layoutX="682.0" layoutY="63.0" mnemonicParsing="false" onAction="#mudaTextoDaLabelAlvo" text="Button" />
+            <Button fx:id="botaoAlvo" layoutX="682.0" layoutY="63.0" mnemonicParsing="false" onAction="#hideEverything" text="Button" />
             <Button fx:id="bbMenosMenos" layoutX="557.0" layoutY="59.0" mnemonicParsing="false" onAction="#bMenosMenos" text="b--" />
       </children>
     </AnchorPane>

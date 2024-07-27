@@ -81,7 +81,6 @@ public class ConstructChessBoard {
 	private int actualMove=0;
 	private PgnReader actualPgnPlaying;
 	private String numVariante;
-	private boolean keyReleased=true;
 	private ChessGame game;
 	private PgnReader toPlayGame;
 	private PgnReader problemToSolve;
@@ -223,14 +222,7 @@ public class ConstructChessBoard {
 		return labelAlvo;
 	}
 
-	public void mudaTextoDaLabelAlvo() {
-		/*
-		 * labelRef.setVisible(false); labelAlvo.setVisible(false);
-		 * 
-		 * bbMenos.setVisible(false); bbMais.setVisible(false);
-		 * bbMenosMenos.setVisible(false); botaoAlvo.setVisible(false);
-		 * trabalhaTabul.setVisible(false);
-		 */
+	public void hideEverything() {
 		anchorPane.setVisible(false);
 		menuBar.setVisible(false);
 
@@ -251,9 +243,7 @@ public class ConstructChessBoard {
 	}
 
 	public void releasedTheKey() {
-		keyReleased = true;
 
-		System.out.println("de fato key released");
 	}
 	
 	
@@ -285,6 +275,15 @@ public class ConstructChessBoard {
 						boardGUI.drawBoard(FENatual);
 						showCtrlMessage = false;
 					}
+					if ((key.getCode() == key.getCode().DOWN)) {
+						actualMove = 0;
+						String FENatual = actualPgnPlaying.displayNextPosition(actualMove-1); //actual move
+						//starts at 0 in abertura01reader, but here whe have the initial
+						//value of actualMove=1
+						boardGUI.drawBoard(FENatual);
+						showCtrlMessage = false;
+					}
+
 					if (key.getCode() == KeyCode.D) {
 						System.out.println("You pressed command to delete game in pgn...");
 
@@ -403,6 +402,7 @@ public class ConstructChessBoard {
 					if (key.getText().equals("F")) {//rotate the board
 						PGNloader.getStage().setMaximized(true);
 						PGNloader.getStage().setFullScreen(true);
+						hideEverything();
 					}
 
 
@@ -413,7 +413,9 @@ public class ConstructChessBoard {
 
 					if (key.getText().equals("x")) {
 						if (isOpeningPlaying)
-							labelRef.setText(OpeningsSources.stringPGNname);
+
+							labelRef.setText(getPenultimateSegment(OpeningsSources.stringPGNname));
+
 						else {
 							labelRef.setText("Problem: " + numVariante + " who mate: " + getWhoMates());
 						}
@@ -435,11 +437,11 @@ public class ConstructChessBoard {
 						if (!result.isPresent() || result.get().trim().isBlank()) {
 							//Do nothing
 						} else {
+							actualMove = 0;
 							numVariante = result.get();
 							System.out.println("NumVar:#" + numVariante);
 							String stringPGNnumber = OpeningsSources.getOpeningPath(numVariante);
 							actualPgnPlaying = new PgnReader(stringPGNnumber);
-							actualMove = 0;
 							String fen = actualPgnPlaying.getFEN();
 							boardGUI.drawBoard(fen);
 							isOpeningPlaying = true;
@@ -504,15 +506,17 @@ public class ConstructChessBoard {
 		return (actualPgnPlaying.getGame().getGameInfo().getEvent() + actualPgnPlaying.getGame().getGameInfo().getPlayers()[1]);
 	}
 
-	/*public void startFlagResetTask() {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			passedSomeTimeSinceLastKeyPress = true;
+
+	public static String getPenultimateSegment(String filePath) {
+		String[] segments = filePath.split("/");
+
+		if (segments.length > 1) {
+			return segments[segments.length - 1];
+		} else {
+			return filePath;
+		}
 	}
-*/
+
 	public void clickGrid(javafx.scene.input.MouseEvent event) {
 		/*
 		 * System.out.println("clicou no pane"); Node clickedNode =
