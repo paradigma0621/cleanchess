@@ -89,7 +89,6 @@ public class ConstructChessBoard {
 	private Map<Integer, List<String>> gameMap;
 	private boolean isOpeningPlaying = false;
 	private String whoWins;
-	//private boolean passedSomeTimeSinceLastKeyPress = true;
 	private Timeline debounceTimeline;
 	private boolean isDebouncing = false;
 
@@ -261,46 +260,30 @@ public class ConstructChessBoard {
 	public void pressedAkey() {
 
 		bigGrid.addEventHandler(KeyEvent.KEY_RELEASED, key -> {
-			if (keyReleased) {
+			if (!isDebouncing) {
+				isDebouncing = true;
 				boolean showCtrlMessage = true;
 				if (key.isControlDown()) {
 
 					if ((key.getCode() == key.getCode().LEFT)) {
-						if (!isDebouncing) {
-							isDebouncing = true;
+						System.out.println("You pressed left arrow...");
+						if (actualMove > 0) actualMove--;
 
-							System.out.println("You pressed left arrow...");
-							if (actualMove > 0) actualMove--;
-
-							String FENatual = actualPgnPlaying.displayNextPosition(actualMove - 1); //actual move
-							//starts at 0 in abertura01reader, but here whe have the initial
-							//value of actualMove=1
-							boardGUI.drawBoard(FENatual);
-							showCtrlMessage = false;
-							debounceTimeline.playFromStart();
-						}
+						String FENatual = actualPgnPlaying.displayNextPosition(actualMove - 1); //actual move
+						//starts at 0 in abertura01reader, but here whe have the initial
+						//value of actualMove=1
+						boardGUI.drawBoard(FENatual);
+						showCtrlMessage = false;
 					}
 					if (key.getCode() == key.getCode().RIGHT) {
 						System.out.println("You pressed right arrow...");
+						if (actualMove < actualPgnPlaying.getHistorySize()) actualMove++;
 
-
-						if (!isDebouncing) {
-							isDebouncing = true;
-
-
-
-							if (actualMove < actualPgnPlaying.getHistorySize()) actualMove++;
-
-							String FENatual = actualPgnPlaying.displayNextPosition(actualMove - 1); //actual move
-							//starts at 0 in abertura01reader, but here whe have the initial
-							//value of actualMove=1
-							boardGUI.drawBoard(FENatual);
-							showCtrlMessage = false;
-
-
-
-							debounceTimeline.playFromStart();
-						}
+						String FENatual = actualPgnPlaying.displayNextPosition(actualMove - 1); //actual move
+						//starts at 0 in abertura01reader, but here whe have the initial
+						//value of actualMove=1
+						boardGUI.drawBoard(FENatual);
+						showCtrlMessage = false;
 					}
 					if (key.getCode() == KeyCode.D) {
 						System.out.println("You pressed command to delete game in pgn...");
@@ -496,13 +479,9 @@ public class ConstructChessBoard {
 						}
 					}
 				}
+				debounceTimeline.playFromStart();
 			}
-
-		keyReleased=false;
-
 		});
-			
-		keyReleased=true;
 	}
 
 	private void loadOneChessProblem(String numVariante) {

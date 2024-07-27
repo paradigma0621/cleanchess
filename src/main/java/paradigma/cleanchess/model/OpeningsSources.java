@@ -8,41 +8,69 @@ public class OpeningsSources {
 
 	public static String getOpeningPath(String numVariant) {
 		if (numVariant.equals("001")) {
-			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/GiuocoPiano/01-GiuocoPiano-4....Cf6.pgn";
-			System.out.println("001 de variante: GiuocoPiano #1");
+			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/01_RuyLopes/ruyLopes_1.A__Var.Morphy_Var.Fechada_jogarTantoComBRancasComoComPretas.pgn";
 			return stringPGNname;
 		}
 
 		if (numVariant.equals("002")) {
-			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/GiuocoPiano/01-GiuocoPiano-4....Cf6.pgn";
-			System.out.println("002 de variante: GiuocoPiano/01-GiuocoPiano-4....Cf6");
+			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/01_RuyLopes/ruyLopes_2.B_Steinitz_Moderna .pgn";
 			return stringPGNname;
 		}
 
 		if (numVariant.equals("003")) {
-			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/GiuocoPiano/02-GioucoPiano-4...Cf6....7.Cc3.pgn";
-			System.out.println("003 de variante: GiuocoPiano/02-GioucoPiano-4...Cf6....7.Cc3");
+			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/01_RuyLopes/ruyLopes_3.Var_C.1.0-Var.Aberta.pgn";
 			return stringPGNname;
 		}
 
 		if (numVariant.equals("004")) {
-			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/GiuocoPiano/03-GioucoPiano-4....De7.pgn";
-			System.out.println("004 de variante: GiuocoPiano/03-GioucoPiano-4....De7");
+			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/01_RuyLopes/ruyLopes_3.Var_C.1.1-Var.Aberta.pgn";
 			return stringPGNname;
 		}
 
 		if (numVariant.equals("005")) {
-			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/GiuocoPiano/04-GioucoPiano-4.d3.pgn";
-			System.out.println("005 de variante: GiuocoPiano/04-GioucoPiano-4.d3");
+			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/01_RuyLopes/ruyLopes_3.Var_C.2.0-Var.Aberta.pgn";
 			return stringPGNname;
 		}
 
 		if (numVariant.equals("006")) {
-			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/GiuocoPiano/MCAXpg44_jogarEstaComAsPretas.pgn";
-			System.out.println("006 de variante: GiuocoPiano/MCAXpg44_jogarEstaComAsPretas");
+			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/01_RuyLopes/ruyLopes_4.VarD.Berlinense.pgn";
 			return stringPGNname;
 		}
 
+		if (numVariant.equals("007")) {
+			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/01_RuyLopes/ruyLopes_5.VarE.Defesa_Steinitz__VAriante_do_MCAX-poremAdoXadrezBasicoEhMelhor(pg327).pgn";
+			return stringPGNname;
+		}
+
+		if (numVariant.equals("008")) {
+			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/01_RuyLopes/ruyLopes_5.VarE.Defesa_Steinitz__VAriante_do_XadrezBasico.pgn";
+			return stringPGNname;
+		}
+
+		if (numVariant.equals("009")) {
+			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/01_RuyLopes/ruyLopes_6.VarF.VarianteClássica.pgn";
+			return stringPGNname;
+		}
+
+		if (numVariant.equals("010")) {
+			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/01_RuyLopes/ruyLopes_7.Var_G.DefesaBird.pgn";
+			return stringPGNname;
+		}
+
+		if (numVariant.equals("011")) {
+			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/01_RuyLopes/ruyLopes_8.Var_H.DefesaSchliemann.pgn";
+			return stringPGNname;
+		}
+
+		if (numVariant.equals("012")) {
+			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/01_RuyLopes/ruyLopes_9.Var_I_AtaqueWorrall.pgn";
+			return stringPGNname;
+		}
+
+		if (numVariant.equals("013")) {
+			stringPGNname = "file:/home/lucas/Documentos/xadrez/AnotacoesPessoais/aberturas/Peao_Rei/01_RuyLopes/ruyLopes_9III-Worrall.pgn";
+			return stringPGNname;
+		}
 
 		/*
 		if (numVariant.equals("001")) {
