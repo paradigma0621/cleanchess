@@ -489,8 +489,6 @@ public class GuiBoard {
 		//	}
    
     }
-    
-    
 
     public GridPane getGridPane() {
     	return gridPane;
@@ -522,20 +520,6 @@ public class GuiBoard {
 			for (int j=1;j<=8;j++) 
 				imageSq[i][j].setRotate(angleToRotateTheBoard); //Rotate individual images, because
 															//the board rotate rotates them too
-									 
-
-/*
-			for (int i=1; i<=8;i++) {
-				for (int j=1;j<=8;j++) {
-					gridPane.getChildren().remove(imageSq[i][j]);
-			    	if (angleToRotateTheBoard==180) {
-						gridPane.add(imageSq[i][j], 8-(i), 8-(j));
-			    	} else {
-						gridPane.add(imageSq[i][j], i - 1, j - 1);
-			    	}
-				}
-			}
-			*/
     }
     
     public void drawBoard(String FENatual) { 

@@ -72,9 +72,6 @@ public class ConstructChessBoard {
 	@FXML
 	private RowConstraints gridPaneGeral_Row4;
 
-
-	
-	private static ConstructChessBoard chessBoard;
 	private FenProcessor FENProcessor;
 	private GuiBoard boardGUI;
 	private int mousePressedColumn, mousePressedRow, mouseReleasedColumn, mouseReleasedRow;
@@ -84,10 +81,8 @@ public class ConstructChessBoard {
 	private ChessGame game;
 	private PgnReader toPlayGame;
 	private PgnReader problemToSolve;
-	private Integer integerProblemToSolve;
 	private Map<Integer, List<String>> gameMap;
 	private boolean isOpeningPlaying = false;
-	private String whoWins;
 	private Timeline debounceTimeline;
 	private boolean isDebouncing = false;
 

@@ -23,73 +23,50 @@ public class PGNloader {
 
     private static Stage stage;
 	
-	@FXML
-     public void loadPGN() {
+	//@FXML
+	public PGNloader(Stage stage) {
+		this.stage = stage;
 	 	createNewStage();
       // 	 Board board = new Board();	//model do tabuleiro
 	// GUIboard guiBoard = new GUIboard(); //view do tabuleiro
      }
 	 
-     @FXML
-     public void mudaLabelYo() {
+	@FXML
+	public void mudaLabelYo() {
 
 	}
 
-     public void createNewStage() {
+	public void createNewStage() {
 	    
-	 
-		System.out.println("agora ok");
-		Stage stageNovo = new Stage();	
-	       	try {
-		    load(stageNovo);
+		try {
+		    load(stage);
 		} catch (IOException e) {
-			 System.out.println("Ocorreu o erro: " + e.getMessage());
+			 System.out.println("### Ocurred error: " + e.getMessage());
 		}
      }
 
-    
- 
-    
 	public static void load(Stage stageDaqui) throws IOException {
 		stage=stageDaqui;
-        	setRoot("newBoard","");
+        	setRoot("newBoard","Clean Chess Interface");
 	}
 
 	public static Stage getStage() {
 		return stage;
 	}
 
-
-
-	    
     static void setRoot(String fxml, String title) throws IOException {
 		Scene scene = new Scene(loadFXML(fxml));
 		stage.setTitle(title);
-        	stage.setScene(scene);
-       		stage.show();
-
-
+		stage.setScene(scene);
+		stage.show();
 		stage.setFullScreen(true);
-		//stagRef.setMaximized(true);
-
-					
-	//	Game game = new Game(scene);
-	
-	//   	game.addObserver(squares[64]);
-
-		
     }
-    //Penso de fazer uma classe "casa" para representar cada um dos quadradinhos do tabuleiro.
-    //Posso extender Observable nessa classe
- 
+
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("/fxml/"+fxml + ".fxml"));
         return fxmlLoader.load();
     }
 
-
-
-    
 }
 
 

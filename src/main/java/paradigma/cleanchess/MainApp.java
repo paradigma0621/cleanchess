@@ -2,7 +2,7 @@ package paradigma.cleanchess;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import paradigma.cleanchess.controller.PGNsCenter;
+import paradigma.cleanchess.controller.PGNloader;
 
 @SuppressWarnings("all")
 public class MainApp extends Application {
@@ -13,7 +13,7 @@ public class MainApp extends Application {
     public void start(Stage stage) throws Exception {
 
 	try {
- 	PGNsCenter center = new PGNsCenter(stage);
+ 	PGNloader center = new PGNloader(stage);
 		} catch (Exception e) {
 			 System.out.println("Ocorreu o erro dentro start: " + e.getMessage());
 			 }
