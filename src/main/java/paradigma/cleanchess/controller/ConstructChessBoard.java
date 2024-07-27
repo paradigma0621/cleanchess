@@ -4,7 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.input.KeyCode;
+import javafx.util.Duration;
 import paradigma.cleanchess.model.*;
 import paradigma.cleanchess.view.GuiBoard;
 import ictk.boardgame.chess.ChessGame;
@@ -82,6 +89,9 @@ public class ConstructChessBoard {
 	private Map<Integer, List<String>> gameMap;
 	private boolean isOpeningPlaying = false;
 	private String whoWins;
+	//private boolean passedSomeTimeSinceLastKeyPress = true;
+	private Timeline debounceTimeline;
+	private boolean isDebouncing = false;
 
 	public ConstructChessBoard() {
 		FENProcessor = new FenProcessor();
@@ -90,6 +100,11 @@ public class ConstructChessBoard {
 				getClass().getResource("/pgn/01_DefesaEslava_VarianteMaisImportante(b)_FonteXB.pgn").toExternalForm();
 		actualPgnPlaying = new PgnReader(pgnExamplePath);
 		System.out.println("aqui2");
+
+
+		// Configurar debounce Timeline
+		debounceTimeline = new Timeline(new KeyFrame(Duration.millis(100), event -> isDebouncing = false));
+		debounceTimeline.setCycleCount(1);
 	}
 	
 	public void initialize() {
@@ -250,33 +265,50 @@ public class ConstructChessBoard {
 				boolean showCtrlMessage = true;
 				if (key.isControlDown()) {
 
-					if (key.getCode() == key.getCode().LEFT) {
-						System.out.println("You pressed left arrow...");
-						if (actualMove > 0) actualMove--;
+					if ((key.getCode() == key.getCode().LEFT)) {
+						if (!isDebouncing) {
+							isDebouncing = true;
 
-						String FENatual = actualPgnPlaying.displayNextPosition(actualMove - 1); //actual move
-						//starts at 0 in abertura01reader, but here whe have the initial
-						//value of actualMove=1
-						boardGUI.drawBoard(FENatual);
-						showCtrlMessage = false;
+							System.out.println("You pressed left arrow...");
+							if (actualMove > 0) actualMove--;
+
+							String FENatual = actualPgnPlaying.displayNextPosition(actualMove - 1); //actual move
+							//starts at 0 in abertura01reader, but here whe have the initial
+							//value of actualMove=1
+							boardGUI.drawBoard(FENatual);
+							showCtrlMessage = false;
+							debounceTimeline.playFromStart();
+						}
 					}
 					if (key.getCode() == key.getCode().RIGHT) {
 						System.out.println("You pressed right arrow...");
-						if (actualMove < actualPgnPlaying.getHistorySize()) actualMove++;
 
-						String FENatual = actualPgnPlaying.displayNextPosition(actualMove - 1); //actual move
-						//starts at 0 in abertura01reader, but here whe have the initial
-						//value of actualMove=1
-						boardGUI.drawBoard(FENatual);
-						showCtrlMessage = false;
+
+						if (!isDebouncing) {
+							isDebouncing = true;
+
+
+
+							if (actualMove < actualPgnPlaying.getHistorySize()) actualMove++;
+
+							String FENatual = actualPgnPlaying.displayNextPosition(actualMove - 1); //actual move
+							//starts at 0 in abertura01reader, but here whe have the initial
+							//value of actualMove=1
+							boardGUI.drawBoard(FENatual);
+							showCtrlMessage = false;
+
+
+
+							debounceTimeline.playFromStart();
+						}
 					}
-					if (key.getCode() == key.getCode().F2) {
+					if (key.getCode() == KeyCode.D) {
 						System.out.println("You pressed command to delete game in pgn...");
 
 						System.out.println("DELETING NumVar:#" + numVariante);
 						gameMap.remove(Integer.parseInt(numVariante));
 
-						String filePathToSave = "/home/lucas/Documentos/xadrez/problemasDeMate/polgar/mateEm2_BCKP.pgn";
+						String filePathToSave = "/home/lucas/Documentos/xadrez/problemasDeMate/polgar/mateEm3.pgn";
 						PgnProblemListSaver.savePgnFile(filePathToSave, gameMap);
 
 						//load the file again
@@ -289,6 +321,7 @@ public class ConstructChessBoard {
 						//actualPgnPlaying = problemToSolve;
 						//isOpeningPlaying = false;
 						labelRef.setText("deletou game: " + numVariante);
+						showCtrlMessage = false;
 					}
 					if (showCtrlMessage) labelRef.setText("You pressed control + " + key.getCode());
 				} else {
@@ -423,7 +456,7 @@ public class ConstructChessBoard {
 							System.out.println("NumVar:#" + numVariante);
 							String stringPGNnumber = OpeningsSources.getOpeningPath(numVariante);
 							actualPgnPlaying = new PgnReader(stringPGNnumber);
-							//actualMove = 0;
+							actualMove = 0;
 							String fen = actualPgnPlaying.getFEN();
 							boardGUI.drawBoard(fen);
 							isOpeningPlaying = true;
@@ -432,8 +465,12 @@ public class ConstructChessBoard {
 					}
 
 					if (key.getText().equals("l")) {
-						String filePath = "/home/lucas/Documentos/xadrez/problemasDeMate/polgar/mateEm2_BCKP.pgn";
+						String filePath = "/home/lucas/Documentos/xadrez/problemasDeMate/polgar/mateEm3.pgn";
 						gameMap = loadPgnFile(filePath);
+					}
+
+					if (key.getText().equals("d")) {
+						labelRef.setText("You pressed d");
 					}
 
 					if (key.getText().equals("j")) {
@@ -488,7 +525,15 @@ public class ConstructChessBoard {
 		return (actualPgnPlaying.getGame().getGameInfo().getEvent() + actualPgnPlaying.getGame().getGameInfo().getPlayers()[1]);
 	}
 
-
+	/*public void startFlagResetTask() {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			passedSomeTimeSinceLastKeyPress = true;
+	}
+*/
 	public void clickGrid(javafx.scene.input.MouseEvent event) {
 		/*
 		 * System.out.println("clicou no pane"); Node clickedNode =
