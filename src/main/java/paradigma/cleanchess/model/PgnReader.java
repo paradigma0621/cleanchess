@@ -9,14 +9,31 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PgnReader {
 	PGNReader reader;
     PGNWriter writer;
     ChessGame game;
     History history;
-   
-    public PgnReader() {  //When starts a new game and doesn't specify the file name address
+
+
+	Board         board   = null;
+	History     	historyTest =null;
+	Move          move    = null,
+			move2   = null,
+			move2B   = null,
+			move3   = null,
+			e4      = null;
+	MoveNotation  san     = new SAN();
+	MoveNotation  san2     = new SAN();
+	PGNWriter      writer2  = null;
+	ChessGameInfo gi      = null;
+	ChessPlayer   player  = null;
+
+
+	public PgnReader() {  //When starts a new game and doesn't specify the file name address
 		 this.game = new ChessGame();
 		 this.history = game.getHistory();
     }
@@ -154,55 +171,44 @@ public String moveMaker(char[] moveChar, ChessGame game) {
      history = game.getHistory();
 	 board = game.getBoard();
 
-	    
-    //setup the moves
-    history = game.getHistory();
-	// board = game.getBoard();
-	 
+
     paradigma.cleanchess.model.entity.Square sqOrigin = new paradigma.cleanchess.model.entity.Square(String.valueOf(moveChar[0])+String.valueOf(moveChar[1]));
     paradigma.cleanchess.model.entity.Square sqDestiny = new Square(String.valueOf(moveChar[2])+String.valueOf(moveChar[3]));
-    /*stem.out.println("sqOrigin column: " + sqOrigin.getColumn().getColumnInt());
-    System.out.println("sqOrigin line: " + sqOrigin.getLine().getLineInt());
 
-    System.out.println("sqDestiny column: " + sqDestiny.getColumn().getColumnInt());
-    System.out.println("sqDestiny line: " + sqDestiny.getLine().getLineInt());
-*/
 	columOrigin=sqOrigin.getColumn().getColumnInt();
 	lineOrigin=sqOrigin.getLine().getLineInt();
 	columnDestiny = sqDestiny.getColumn().getColumnInt();
 	lineDestiny=sqDestiny.getLine().getLineInt();
-	
+
+	boolean whiteKingCastling = false;
+	boolean whiteQueenCastling = false;
+	boolean blackKingCastling = false;
+	boolean blackQueenCastling = false;
+	ChessMove chessMove = null;
 	 try {
-		 move = new ChessMove((ChessBoard) board, columOrigin, lineOrigin, columnDestiny, lineDestiny); //1.e4
+		 move = new ChessMove((ChessBoard) board, columOrigin, lineOrigin, columnDestiny, lineDestiny);
+		 chessMove = (ChessMove) move;
 		 history.add(move);
 	 }
 	 catch (Exception e) {
 	        System.err.println(e);
-	     }
+	 }
 	 
-	 ChessBoardNotation fen = new FEN();
-     //  System.out.println("X board position--------");
-   //    System.out.println("FEN: " + fen.boardToString(game.getBoard()));
-  	///   System.out.println();
-  	  return fen.boardToString(game.getBoard());
+	 ChessBoardNotation fenObj = new FEN();
+	 String fen = fenObj.boardToString(game.getBoard());
+
+	if (isWhiteKingCastling(chessMove))
+		fen = processFenForWhiteKingCastling(fen);
+
+	if (isBlackKingCastling(chessMove))
+		fen = processFenForBlackKingCastling(fen);
+
+  	  return fen;
+
   	   
 }
 	 
 //-----------------------------------------------------
-
-    Board         board   = null;
-   History     	historyTest =null;
-    Move          move    = null,
-  		  		move2   = null,
-  	    		move2B   = null,
-  		  		move3   = null,
-                  e4      = null;
-    MoveNotation  san     = new SAN();
-    MoveNotation  san2     = new SAN();      
-    PGNWriter      writer2  = null;
-    ChessGameInfo gi      = null;
-    ChessPlayer   player  = null;
-
 
     public void roda2() {
     try {
@@ -404,5 +410,57 @@ System.out.println("Variante: "+san.moveToString(move));
        e.printStackTrace();
     }
  }
+
+	private boolean isWhiteKingCastling(ChessMove move) {
+		if (move.getOrigin().getFile() == 5 && move.getOrigin().getRank() == 1 && move.getDestination().getFile() == 7 && move.getDestination().getRank() == 1) {
+			System.out.println("WHITE KING CASTLING");
+			return true;
+		}
+		/*if (move.getOriginColumn()==5 && move.getOriginRow()==1 && move.getDestColumn()==7 && move.getDestRow()==1) {
+			return true;
+		}*/
+		return false;
+	}
+
+	private String processFenForWhiteKingCastling(String rawFen) {
+		//return rawFen.replace("1KR", "RK1");
+		Pattern pattern = Pattern.compile("(\\d+)KR");
+		Matcher matcher = pattern.matcher(rawFen);
+		StringBuffer result = new StringBuffer();
+
+		while (matcher.find()) {
+			int x = Integer.parseInt(matcher.group(1)); // Extrai o número X
+			String replacement = String.valueOf(x - 1) + "RK1"; // Substitui por (X-1)RK
+			matcher.appendReplacement(result, replacement);
+		}
+		matcher.appendTail(result);
+
+		return result.toString();
+	}
+
+	private boolean isBlackKingCastling(ChessMove move) {
+		if (move.getOrigin().getFile() == 5 && move.getOrigin().getRank() == 8 && move.getDestination().getFile() == 7 && move.getDestination().getRank() == 8) {
+			System.out.println("BLACK KING CASTLING");
+			return true;
+		}
+
+		return false;
+	}
+
+	private String processFenForBlackKingCastling(String rawFen) {
+		Pattern pattern = Pattern.compile("(\\d+)kr");
+		Matcher matcher = pattern.matcher(rawFen);
+		StringBuffer result = new StringBuffer();
+
+		while (matcher.find()) {
+			int x = Integer.parseInt(matcher.group(1)); // Extrai o número X
+			String replacement = String.valueOf(x - 1) + "rk1"; // Substitui por (X-1)RK
+			matcher.appendReplacement(result, replacement);
+		}
+		matcher.appendTail(result);
+
+		return result.toString();
+	}
+
 
 }

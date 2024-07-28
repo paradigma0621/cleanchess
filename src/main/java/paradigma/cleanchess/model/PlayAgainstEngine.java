@@ -50,7 +50,7 @@ public static void createScriptFile(String FENatual) {
 			pr.waitFor();
 
 			if (pr.exitValue()!=0)
-				System.out.println("Erro de saida " + pr.exitValue());
+				System.out.println("### Output Error " + pr.exitValue());
 
 		} catch (Exception e) {
 				e.printStackTrace();
@@ -90,10 +90,6 @@ public static void createScriptFile(String FENatual) {
 		char var[] = new char[4];
 		interestedMove.getChars(0, 4, var,0);
 		return var;
-	}
-	
-	public static void makeMove(char[] move, PgnReader pgnFile) {
-		//pgnFile.moveMaker(move);
 	}
 	
 }

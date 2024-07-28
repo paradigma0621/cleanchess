@@ -8,6 +8,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import ictk.boardgame.chess.io.ChessBoardNotation;
+import ictk.boardgame.chess.io.FEN;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.image.Image;
@@ -90,7 +92,7 @@ public class ConstructChessBoard {
 	private boolean isOpeningPlaying = false;
 	private Timeline debounceTimeline;
 	private boolean isDebouncing = false;
-	private String exampleFEN = "2kr3r/ppp2ppp/8/2bqP3/3nBBb1/8/PPPN2PP/R3KQ1R b KQ - 0 1";
+	private String lastFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq";
 
 	public ConstructChessBoard() {
 		FENProcessor = new FenProcessor();
@@ -258,7 +260,7 @@ public class ConstructChessBoard {
 				isDebouncing = true;
 				boolean showCtrlMessage = true;
 
-z				if (key.isControlDown() || key.getCode().equals(KeyCode.CONTROL)) {
+				if (key.isControlDown() || key.getCode().equals(KeyCode.CONTROL)) {
 					if ((key.getCode() == key.getCode().LEFT)) {
 						System.out.println("You pressed left arrow...");
 						if (actualMove > 0) actualMove--;
@@ -301,22 +303,19 @@ z				if (key.isControlDown() || key.getCode().equals(KeyCode.CONTROL)) {
 						System.out.println("You pressed s");
 						actualMove++;
 						System.out.println("actualMove atual desde o começo: " + actualMove);
-						PlayAgainstEngine.createScriptFile(exampleFEN);
-						boardGUI.drawBoard(exampleFEN);
+						PlayAgainstEngine.createScriptFile(lastFEN);
+						//boardGUI.drawBoard(lastFEN);
 						PlayAgainstEngine.runEngine();
 						System.out.println("depois de rodar engine");
 						String bruteBestMove = PlayAgainstEngine.readEngineOutput();
 						char bestMove[] = PlayAgainstEngine.getTheEngineMove(bruteBestMove);
 						System.out.println("best move from file: " + String.copyValueOf(bestMove));
-						PlayAgainstEngine.makeMove(bestMove, toPlayGame);
-
 
 						System.out.println("acutal mve na controlleR: " + actualMove);
+						lastFEN = toPlayGame.moveMaker(bestMove, actualPgnPlaying.getGame()); //actual move
+						System.out.println("fenMovida: " + lastFEN);
 
-						String exampleFEN = toPlayGame.moveMaker(bestMove, game); //actual move
-						System.out.println("fenMovida: " + exampleFEN);
-
-						boardGUI.drawBoard(exampleFEN);
+						boardGUI.drawBoard(lastFEN);
 					}
 
 
@@ -363,8 +362,11 @@ z				if (key.isControlDown() || key.getCode().equals(KeyCode.CONTROL)) {
 
 
 					if (key.getCode() == KeyCode.P) {
-						game = new ChessGame();
-						toPlayGame = new PgnReader();
+						ChessBoardNotation fen = new FEN();
+						//  System.out.println("X board position--------");
+						//    System.out.println("FEN: " + fen.boardToString(game.getBoard()));
+						///   System.out.println();
+						//System.out.println("minha FEN atual: " + fen.boardToString(actualPgnPlaying.getGame().getBoard()));
 					}
 
 					if (key.getCode() == KeyCode.X) {
