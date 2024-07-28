@@ -169,7 +169,7 @@ public String moveMaker(char[] moveChar, ChessGame game) {
 */
 	columOrigin=sqOrigin.getColumn().getColumnInt();
 	lineOrigin=sqOrigin.getLine().getLineInt();
-	columnDestiny =sqDestiny.getColumn().getColumnInt();
+	columnDestiny = sqDestiny.getColumn().getColumnInt();
 	lineDestiny=sqDestiny.getLine().getLineInt();
 	
 	 try {

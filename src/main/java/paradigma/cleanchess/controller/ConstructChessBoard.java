@@ -90,10 +90,13 @@ public class ConstructChessBoard {
 	private boolean isOpeningPlaying = false;
 	private Timeline debounceTimeline;
 	private boolean isDebouncing = false;
+	private String exampleFEN = "2kr3r/ppp2ppp/8/2bqP3/3nBBb1/8/PPPN2PP/R3KQ1R b KQ - 0 1";
 
 	public ConstructChessBoard() {
 		FENProcessor = new FenProcessor();
 		movePiece = new MovePiece();
+		toPlayGame = new PgnReader();
+		game = new ChessGame();
 		//System.out.println("criou instancias que eu vou usar");
 		String pgnExamplePath =
 				getClass().getResource("/pgn/01_DefesaEslava_VarianteMaisImportante(b)_FonteXB.pgn").toExternalForm();
@@ -254,8 +257,8 @@ public class ConstructChessBoard {
 			if (!isDebouncing) {
 				isDebouncing = true;
 				boolean showCtrlMessage = true;
-				if (key.isControlDown()) {
 
+z				if (key.isControlDown() || key.getCode().equals(KeyCode.CONTROL)) {
 					if ((key.getCode() == key.getCode().LEFT)) {
 						System.out.println("You pressed left arrow...");
 						if (actualMove > 0) actualMove--;
@@ -264,7 +267,6 @@ public class ConstructChessBoard {
 						//starts at 0 in abertura01reader, but here whe have the initial
 						//value of actualMove=1
 						boardGUI.drawBoard(FENatual);
-						showCtrlMessage = false;
 					}
 					if (key.getCode() == key.getCode().RIGHT) {
 						System.out.println("You pressed right arrow...");
@@ -274,7 +276,6 @@ public class ConstructChessBoard {
 						//starts at 0 in abertura01reader, but here whe have the initial
 						//value of actualMove=1
 						boardGUI.drawBoard(FENatual);
-						showCtrlMessage = false;
 					}
 					if ((key.getCode() == key.getCode().DOWN)) {
 						actualMove = 0;
@@ -282,7 +283,6 @@ public class ConstructChessBoard {
 						//starts at 0 in abertura01reader, but here whe have the initial
 						//value of actualMove=1
 						boardGUI.drawBoard(FENatual);
-						showCtrlMessage = false;
 					}
 
 					if (key.getCode() == KeyCode.D) {
@@ -295,47 +295,14 @@ public class ConstructChessBoard {
 						gameMap = loadPgnFile(filePathToSave);
 						loadOneChessProblem(numVariante);
 						labelRef.setText("deletou game: " + numVariante);
-						showCtrlMessage = false;
-					}
-					if (showCtrlMessage) labelRef.setText("You pressed control + " + key.getCode());
-				} else {
-					labelRef.setText("");
-					if (key.getText().equals("+")) {
-						System.out.println("You pressed +...");
-						if (actualMove < actualPgnPlaying.getHistorySize()) actualMove++;
-
-						String FENatual = actualPgnPlaying.displayNextPosition(actualMove - 1); //actual move
-						//starts at 0 in abertura01reader, but here whe have the initial
-						//value of actualMove=1
-						boardGUI.drawBoard(FENatual);
 					}
 
-					if (key.getText().equals("-")) {
-						System.out.println("You pressed -...");
-						if (actualMove > 0) actualMove--;
-
-						String FENatual = actualPgnPlaying.displayNextPosition(actualMove - 1); //actual move
-						//starts at 0 in abertura01reader, but here whe have the initial
-						//value of actualMove=1
-						boardGUI.drawBoard(FENatual);
-					}
-
-
-					if (key.getText().equals("s")) {
+					if (key.getCode() == KeyCode.S) {
 						System.out.println("You pressed s");
 						actualMove++;
-						//String FENatual=abertura01reader.displayNextPosition(actualMove-1);
-						//System.out.println("FEN processada: " + FENatual);
 						System.out.println("actualMove atual desde o começo: " + actualMove);
-						String FENatual;
-						if (actualMove == 0) {
-							FENatual = "2kr3r/ppp2ppp/8/2bqP3/3nBBb1/8/PPPN2PP/R3KQ1R b KQ - 0 1";
-							System.out.println("Running atualMove==0");
-						} else {
-							FENatual = toPlayGame.displayNextPosition(actualMove - 1);
-							System.out.println("Running (actualMove !=0) FENatual=" + FENatual);
-						}
-						PlayAgainstEngine.createScriptFile(FENatual);
+						PlayAgainstEngine.createScriptFile(exampleFEN);
+						boardGUI.drawBoard(exampleFEN);
 						PlayAgainstEngine.runEngine();
 						System.out.println("depois de rodar engine");
 						String bruteBestMove = PlayAgainstEngine.readEngineOutput();
@@ -346,23 +313,21 @@ public class ConstructChessBoard {
 
 						System.out.println("acutal mve na controlleR: " + actualMove);
 
-						String FENatualMovida = toPlayGame.moveMaker(bestMove, game); //actual move
-						System.out.println("fenMovida: " + FENatualMovida);
+						String exampleFEN = toPlayGame.moveMaker(bestMove, game); //actual move
+						System.out.println("fenMovida: " + exampleFEN);
 
-						boardGUI.drawBoard(FENatualMovida);
-
-
+						boardGUI.drawBoard(exampleFEN);
 					}
 
 
-					if (key.getText().equals("m")) {//mate em 3
+					if (key.getCode() == KeyCode.M) {
 						//String FENatual="3B1R1K/4rb1R/5Pp1/1n2k1N1/2p3P1/2P5/2NQ4/8"; // ex 26 - white// checkmate in 2
 						String FENatual = "3B1R1K/4rb1R/5Pp1/1n2k1N1/2p3P1/2P5/2NQ4/8"; // mate 26 (em 2 (dos difíceis) - esse que vale com "m"
 						System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 						boardGUI.drawBoard(FENatual);
 					}
 
-					if (key.getText().equals("M")) {//mate em 3
+					/*if (key.getText().equals("M")) {//mate em 3
 						String FENstring;
 						Button btnNome = new Button("Entrar com FEN");
 						TextInputDialog dialogoFEN = new TextInputDialog();
@@ -381,29 +346,28 @@ public class ConstructChessBoard {
 							boardGUI.drawBoard(FENstring);
 						}
 						//boardGUI.drawBoard(FENatual);
-
+						showCtrlMessage = false;
 					}
-
-					if (key.getText().equals("r")) {//rotate the board
+*/
+					if (key.getCode() == KeyCode.R) {
 						//boardGUI.changeNeedToRotateTheBoard();
 						boardGUI.setAngleToRotate();
 						boardGUI.rotateTheBoard();
-
 					}
 
-					if (key.getText().equals("F")) {//rotate the board
+					if (key.getCode() == KeyCode.F) {
 						PGNloader.getStage().setMaximized(true);
 						PGNloader.getStage().setFullScreen(true);
 						hideEverything();
 					}
 
 
-					if (key.getText().equals("P")) {
+					if (key.getCode() == KeyCode.P) {
 						game = new ChessGame();
 						toPlayGame = new PgnReader();
 					}
 
-					if (key.getText().equals("x")) {
+					if (key.getCode() == KeyCode.X) {
 						if (isOpeningPlaying)
 
 							labelRef.setText(getPenultimateSegment(OpeningsSources.stringPGNname));
@@ -413,7 +377,7 @@ public class ConstructChessBoard {
 						}
 					}
 
-					if (key.getText().equals("o")) {
+					if (key.getCode() == KeyCode.O) {
 						System.out.println("You pressed o");
 
 						String FENstring;
@@ -438,19 +402,9 @@ public class ConstructChessBoard {
 							boardGUI.drawBoard(fen);
 							isOpeningPlaying = true;
 						}
-
 					}
 
-					if (key.getText().equals("l")) {
-						String filePath = "/home/lucas/Documentos/xadrez/problemasDeMate/polgar/mateEm3.pgn";
-						gameMap = loadPgnFile(filePath);
-					}
-
-					if (key.getText().equals("d")) {
-						labelRef.setText("You pressed d");
-					}
-
-					if (key.getText().equals("j")) {
+					if (key.getCode() == KeyCode.J) {
 						Button btnNumber = new Button("Choose");
 						TextInputDialog dialogoNumber = new TextInputDialog();
 
@@ -463,19 +417,27 @@ public class ConstructChessBoard {
 						if (!result.isPresent() || result.get().trim().isBlank()) {
 							//Do nothing
 						} else {
+							String filePath = "/home/lucas/Documentos/xadrez/problemasDeMate/polgar/mateEm3.pgn";
+							gameMap = loadPgnFile(filePath);
+
 							actualMove = 0;
 							numVariante = result.get();
 							loadOneChessProblem(numVariante);
 						}
 					}
 
-					if (key.getText().equals("k")) {
+					if (key.getCode() == KeyCode.K) {
 						System.out.println("rodando  kkkkk");
 						movePiece.drawGrayRectangle(boardGUI, 1, 1);
 					}
-
-
+					showCtrlMessage = false;
+				} else {
+					if (showCtrlMessage) labelRef.setText("You pressed " + key.getCode());
+					if (key.getCode() == KeyCode.Z) {
+						labelRef.setText("");
+					}
 				}
+				showCtrlMessage = false;
 				debounceTimeline.playFromStart();
 			}
 		});

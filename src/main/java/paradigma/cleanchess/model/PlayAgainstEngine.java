@@ -15,7 +15,7 @@ public static void createScriptFile(String FENatual) {
 								//mas desse jeito o Java roda... apesar de não saber se/quando ele
 								//executa o finally
 	try {
-		writer = new PrintWriter("/home/lucas/Documentos/xadrez/java/xadrezQueEstaValendo-16.9/cleanchess/src/main/resources/executable/fen", "UTF-8");
+		writer = new PrintWriter("/home/lucas/Documentos/xadrez/java/xadrezQueEstaValendo-16.9/cleanchess/src/main/resources/playedGames/fen", "UTF-8");
 		writer.println("#!/bin/bash");
 		writer.println("(");
 		writer.println("echo \"setoption name Hash value 128\";");
@@ -36,7 +36,7 @@ public static void createScriptFile(String FENatual) {
 	public static void runEngine() {
 		try {
 			Runtime rt = Runtime.getRuntime();
-			String graphDir = "/home/lucas/Documentos/xadrez/java/xadrezQueEstaValendo-16.9/cleanchess/src/main/resources/executable/";
+			String graphDir = "/home/lucas/Documentos/xadrez/java/xadrezQueEstaValendo-16.9/cleanchess/src/main/resources/playedGames/";
 			String cmdString = graphDir + "fen";
 			System.out.println(cmdString);
 			Process pr = rt.exec(cmdString);
