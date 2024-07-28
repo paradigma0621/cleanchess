@@ -1,0 +1,4 @@
+
+1o) deixo a classe Square com o método de cálculo da cor
+
+2o) Implemento um método na classe view pra saber a cor do Square da (column, line)

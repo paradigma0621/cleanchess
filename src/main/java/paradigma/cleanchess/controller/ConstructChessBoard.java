@@ -10,7 +10,11 @@ import java.util.concurrent.TimeUnit;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import paradigma.cleanchess.model.*;
 import paradigma.cleanchess.view.GuiBoard;
@@ -74,8 +78,9 @@ public class ConstructChessBoard {
 
 	private FenProcessor FENProcessor;
 	private GuiBoard boardGUI;
+	private MovePiece movePiece;
 	private int mousePressedColumn, mousePressedRow, mouseReleasedColumn, mouseReleasedRow;
-	private int actualMove=0;
+	private int actualMove = 0;
 	private PgnReader actualPgnPlaying;
 	private String numVariante;
 	private ChessGame game;
@@ -88,6 +93,7 @@ public class ConstructChessBoard {
 
 	public ConstructChessBoard() {
 		FENProcessor = new FenProcessor();
+		movePiece = new MovePiece();
 		//System.out.println("criou instancias que eu vou usar");
 		String pgnExamplePath =
 				getClass().getResource("/pgn/01_DefesaEslava_VarianteMaisImportante(b)_FonteXB.pgn").toExternalForm();
@@ -280,23 +286,14 @@ public class ConstructChessBoard {
 					}
 
 					if (key.getCode() == KeyCode.D) {
-						System.out.println("You pressed command to delete game in pgn...");
-
 						System.out.println("DELETING NumVar:#" + numVariante);
 						gameMap.remove(Integer.parseInt(numVariante));
 
 						String filePathToSave = "/home/lucas/Documentos/xadrez/problemasDeMate/polgar/mateEm3.pgn";
 						PgnProblemListSaver.savePgnFile(filePathToSave, gameMap);
 
-						//load the file again
 						gameMap = loadPgnFile(filePathToSave);
 						loadOneChessProblem(numVariante);
-						/*String stringPGNnumber = "file:" + filePathToSave;
-						problemToSolve = new PgnReader(stringPGNnumber);
-						String fen = problemToSolve.getFEN();
-						boardGUI.drawBoard(fen);*/
-						//actualPgnPlaying = problemToSolve;
-						//isOpeningPlaying = false;
 						labelRef.setText("deletou game: " + numVariante);
 						showCtrlMessage = false;
 					}
@@ -454,11 +451,6 @@ public class ConstructChessBoard {
 					}
 
 					if (key.getText().equals("j")) {
-
-						//gameMapToSave.put(1, gameMap.get(1));
-					//	gameMapToSave.put(2, gameMap.get(3));
-					//	gameMapToSave.put(3, gameMap.get(5));
-
 						Button btnNumber = new Button("Choose");
 						TextInputDialog dialogoNumber = new TextInputDialog();
 
@@ -471,15 +463,24 @@ public class ConstructChessBoard {
 						if (!result.isPresent() || result.get().trim().isBlank()) {
 							//Do nothing
 						} else {
+							actualMove = 0;
 							numVariante = result.get();
 							loadOneChessProblem(numVariante);
 						}
 					}
+
+					if (key.getText().equals("k")) {
+						System.out.println("rodando  kkkkk");
+						movePiece.drawGrayRectangle(boardGUI, 1, 1);
+					}
+
+
 				}
 				debounceTimeline.playFromStart();
 			}
 		});
 	}
+
 
 	private void loadOneChessProblem(String numVariante) {
 		Map<Integer, List<String>> gameMapToSave = new HashMap<>();

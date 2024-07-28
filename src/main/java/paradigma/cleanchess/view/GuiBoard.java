@@ -270,9 +270,7 @@ public class GuiBoard {
 	public void drawEmptyBoard() {
 		System.out.println("rodando loadCriaGrid");
 		gridPane = new GridPane();
-		
-		
-	
+
 		stackPane.getChildren().add(gridPane);
 		double goodMeasure = Math.round(770 * scaleFactor) + 2;
 	
@@ -282,33 +280,15 @@ public class GuiBoard {
 		//stackPane.setPrefWidth(770 * scaleFactor+1); //this "+1" is to acomodate the left border, otherwise it doesn't appear
 		//stackPane.setPrefHeight(770 * scaleFactor+1); //this "+1" is to acomodate the inferior border, otherwise it doesn't appear
 
-
-		
-		/*
-		for (int i = 1; i <= 8; i++) {
-			for (int j = 1; j <= 8; j++) {
-				imageEmptyBoard[i][j] = new ImageView();
-				imageEmptyBoard[i][j].setImage(imgCasaBranca);
-				imageEmptyBoard[i][j].setFitWidth(96 * scaleFactor);
-				imageEmptyBoard[i][j].setFitHeight(96 * scaleFactor);
-				gridPane.add(imageSq[i][j], i - 1, j - 1);
-			}
-		*/
-
-		
 		for (int i = 1; i <= 8; i++) {
 			for (int j = 1; j <= 8; j++) {
 				imageEmptyBoard[i][j] = new ImageView();
 
-				if (((i + j) % 2) == 0) {
+				if (((i + j) % 2) == 0)
 				    	imageEmptyBoard[i][j].setImage(imgCasaBranca);
-					//imageEmptyBoard[i][j].setImage(imgPretasReiCasaPreta);
-				    
-				}
 
-				if (((i + j) % 2) == 1) {
+				if (((i + j) % 2) == 1)
 					imageEmptyBoard[i][j].setImage(imgCasaPreta);
-				}
 
 				imageEmptyBoard[i][j].setFitWidth(96 * scaleFactor);
 				imageEmptyBoard[i][j].setFitHeight(96 * scaleFactor);
@@ -537,4 +517,8 @@ public class GuiBoard {
     public boolean getIfNeedToRotateTheBoard() {
        	return needToRotateTheBoard;
     }
+
+	public double getScaleFactor() {
+		return scaleFactor;
+	}
 }
