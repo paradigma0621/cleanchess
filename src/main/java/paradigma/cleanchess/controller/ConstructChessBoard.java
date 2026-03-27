@@ -532,7 +532,7 @@ public class ConstructChessBoard {
 							//Do nothing
 						} else {
 
-							String filePath = "//mnt/drive_docs/all/programacao/github/cleanchess/mateEm2.pgn";
+							String filePath = "/mnt/drive_docs/all/programacao/github/cleanchess/mateEm2.pgn";
 
 							gameMap = loadPgnFile(filePath);
 

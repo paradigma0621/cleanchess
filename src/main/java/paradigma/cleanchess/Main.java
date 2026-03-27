@@ -13,7 +13,8 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) {
-        String pgnPath = "/Users/paradigma0621/IdeaProjects/git/cleanchess/src/main/resources/python/01_VarianteDasTrocas_Variante01.pgn";
+        //String pgnPath = "/Users/paradigma0621/IdeaProjects/git/cleanchess/src/main/resources/python/01_VarianteDasTrocas_Variante01.pgn";
+        String pgnPath = "/mnt/drive_docs/all/programacao/github/cleanchess/src/main/resources/python/01_VarianteDasTrocas_Variante01.pgn";
 
         File file = new File(pgnPath);
 

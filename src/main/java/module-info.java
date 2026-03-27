@@ -1,13 +1,9 @@
-module groupId {
+module paradigma.cleanchess {
 
-    //requires javafx.controls;
+    requires chesslib;
     requires javafx.fxml;
-    //requires javafx.media;
-    //requires javafx.base;
-    
 	requires javafx.graphics;
     requires javafx.controls;
-    requires chesslib.RELEASE;
 
     opens paradigma.cleanchess to javafx.fxml;
     exports paradigma.cleanchess;
