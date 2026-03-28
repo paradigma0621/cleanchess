@@ -1,5 +1,6 @@
 paradigma0621/cleanchess/model/PlayAgainstEngine.class
 paradigma0621/cleanchess/novos/model/StageSingleton.class
+paradigma0621/cleanchess/controller/BCKP_ConstructChessBoard.class
 paradigma0621/cleanchess/model/FenProcessor.class
 paradigma0621/cleanchess/controller/RavTree.class
 paradigma0621/cleanchess/model/entity/Square.class

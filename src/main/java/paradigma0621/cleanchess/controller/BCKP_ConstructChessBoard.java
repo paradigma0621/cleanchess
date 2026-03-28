@@ -3,7 +3,9 @@ package paradigma0621.cleanchess.controller;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.game.Game;
+import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveList;
+import com.github.bhlangonijr.chesslib.pgn.PgnException;
 import com.github.bhlangonijr.chesslib.pgn.PgnIterator;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -34,7 +36,7 @@ import java.util.Optional;
 import static java.util.Objects.isNull;
 import static paradigma0621.cleanchess.model.PgnProblemListLoader.loadPgnFile;
 
-public class ConstructChessBoard {
+public class BCKP_ConstructChessBoard {
 	@FXML
 	private Label labelRef;
 	@FXML
@@ -49,6 +51,13 @@ public class ConstructChessBoard {
 	private MenuBar menuBar;
 	@FXML
 	private Label labelAlvo;
+
+	@FXML
+	private Button bbMenos;
+	@FXML
+	private Button bbMais;
+	@FXML
+	private Button bbMenosMenos;
 	@FXML
 	private Button botaoAlvo;
 	@FXML
@@ -90,7 +99,7 @@ public class ConstructChessBoard {
     private boolean isOpeningPlaying;
 
 
-    public ConstructChessBoard() {
+    public BCKP_ConstructChessBoard() {
 		FENProcessor = new FenProcessor();
 		movePiece = new MovePiece();
 		String pgnExamplePath =
@@ -123,6 +132,65 @@ public class ConstructChessBoard {
 		stackPane.setAlignment(Pos.CENTER);
 		// setAlignment(labelRef,);
 
+	}
+
+	public void bMais() {
+		//String FENatual = actualPgnPlaying.displayNextPosition(actualMove);
+		//FENProcessor.passFENtoLines(FENatual); // ex 30 - white
+		FENProcessor.decriptFEN();
+		//boardModel.printBoardASCII();
+		boardGUI.drawEmptyBoard();
+		boardGUI.refreshBoardImage(FENProcessor.getBoardASCII());
+		actualMove++;
+		
+	}
+
+	
+	public void bMenos() throws Exception {
+        try {
+            int ply = 1;
+            for (Move move : moveList) {
+                board.doMove(move);
+                System.out.println(ply + ": " + move.toString() +  " - FEN: " + board.getFen());
+                ply++;
+            }
+
+            System.out.println("Final FEN: " + board.getFen());
+        } catch (PgnException e) {
+            System.out.println(">>> [AVISO] Não foi possível carregar os lances deste game:");
+            System.out.println("    Motivo: " + e.getMessage());
+            // aqui você pode simplesmente ignorar os lances, mas ainda aproveita os headers
+        }
+        /*
+		//String FENatual= actualPgnPlaying.displayNextPosition(actualMove);
+        String FENatual="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq";
+		FENProcessor.passFENtoLines(FENatual); // ex 30 - white
+
+		FENProcessor.decriptFEN();
+
+		boardGUI.drawEmptyBoard();
+		boardGUI.refreshBoardImage(FENProcessor.getBoardASCII());
+		actualMove--;
+		*/
+	}
+
+	
+	public void bMenosMenos() {
+
+		System.out.println("rodando bMenosMenos");
+
+		// squares before (AP????)
+
+		//boardModel.passFENtoLines("r1b2k1r/1p1p1pp1/p2P4/4N1Bp/3p4/8/PPB2P2/2K1R3 w - - 0 1"); // ex 30 - white// checkmate in 3
+
+//				"k1/pp4p1/1b2p2p/8/P3b1Nq/BPr4P/R4P1K/4RQ2 b - - 0 1"); //ex 86 - mate em 3. as pretas ganham
+		//boardModel.passFENtoLines("3r4/pp3kpQ/5p1p/3q1b2/1B2N3/8/PP3PPP/4R1K1 w - - 0 1"); // ex 30 - white
+		//problema 49 do polgar mate em 3 - as brancas ganham													
+
+		FENProcessor.decriptFEN();
+		FENProcessor.printBoardASCII();
+		boardGUI.drawEmptyBoard();
+		boardGUI.refreshBoardImage(FENProcessor.getBoardASCII());
 	}
 
 	/*
