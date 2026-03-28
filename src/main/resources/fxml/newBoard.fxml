@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="bigGrid" alignment="TOP_CENTER" minWidth="1000.0" onKeyPressed="#pressedAkey" onKeyReleased="#releasedTheKey" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="paradigma.cleanchess.controller.ConstructChessBoard">
+<GridPane fx:id="bigGrid" alignment="TOP_CENTER" minWidth="1000.0" onKeyPressed="#pressedAkey" onKeyReleased="#releasedTheKey" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="paradigma0621.cleanchess.controller.ConstructChessBoard">
    <columnConstraints>
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
    </columnConstraints>
