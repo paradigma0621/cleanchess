@@ -7,9 +7,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
 
-@SuppressWarnings("all")
 public class GuiBoard {
-	// ChessBoard chessBoard;
 	private double scaleFactor = 0.8;
 	private GridPane gridPane;
 	private FenProcessor FENProcessor;
@@ -62,92 +60,10 @@ public class GuiBoard {
 	public GuiBoard(FenProcessor FENProcessor, StackPane stackPane) { /// , BorderPane stackPane) {
 		this.FENProcessor = FENProcessor;
 		this.stackPane = stackPane;
-		//gridPane = new GridPane();
 		loadImagesIntoMemory();
 		System.out.println("Foi atribuido corretamente o stackPane na classe GUIBoard");
-		// gridPane = new GridPane();
-		// stackPane.setCenter(gridPane);
-	}
-    
-	public void criaGridTabuleiro() {
-		System.out.println("rodando loadCriaGrid");
-		/*
-		gridPane = new GridPane();
-		Label list = new Label("textoLabel1");
-		Label list2 = new Label("textoLabel2");
-		// stackPane.setAlignment(gridPane, Pos.CENTER);
-		// gridPane.add(list, 1, 1);
-		// gridPane.add(list2, 1, 2);
-		// gridPane.add(list, 2, 1);
-
-		//	stackPane.setCenter(gridPane);
-
-		final String strCasaPreta = getClass().getResource("/images/casaPreta96x96.jpg").toExternalForm();
-		final String strCasaBranca = getClass().getResource("/images/casaBranca96x96.jpg").toExternalForm();
-		final String strBrancasPeaoCasaBranca = getClass().getResource("/images/casaBranca-peaoBranco.jpg")
-				.toExternalForm();
-		final String strBrancasPeaoCasaPreta = getClass().getResource("/images/casaPreta-peaoBranco.jpg")
-		    				.toExternalForm();
-
-		Image imgCasaBranca = new Image(strCasaBranca);
-
-		System.out.println("rodando monta GridPane");
-    */
-
-
-		
-		/*	for (int i = 1; i <= 8; i++) {
-			for (int j = 1; j <= 8; j++) {
-				imageSq[i][j] = new ImageView();
-				imageSq[i][j].setImage(imgCasaBranca);
-				imageSq[i][j].setFitWidth(96 * scaleFactor);
-				imageSq[i][j].setFitHeight(96 * scaleFactor);
-				gridPane.add(imageSq[i][j], i - 1, j - 1);
-			}
-			}
-			}*/
-
-
-
-
-    
-		/*
-		 * System.out.println("carrega img"); imageSq[1][1] = new ImageView();
-		 * imageSq[1][1].setImage(imgCasaBranca); imageSq[1][1].setFitWidth(96 *
-		 * scaleFactor);
-		 * 
-		 * gridPane.add(imageSq[1][1], 1, 1); System.out.println("rodando mostra img");
-		 */
-    /*
-		// ImageView imageView10 = new ImageView();
-
-		// images[1] = tabuleiro.
-		/// final Node foundNode = getNodeFromGridPane(tabuleiro, 1, 2);
-		// tabuleiro.add(imageView10, 8,8);
 	}
 
-	public void setSqPiece(int column, int lin) {// , PiecesTypes piece) {
-
-		final String strCasaPreta = getClass().getResource("/images/casaPreta96x96.jpg").toExternalForm();
-		final String strCasaBranca = getClass().getResource("/images/casaBranca96x96.jpg").toExternalForm();
-		final String strBrancasPeaoCasaBranca = getClass().getResource("/images/casaBranca-peaoBranco.jpg")
-				.toExternalForm();
-		final String strBrancasPeaoCasaPreta = getClass().getResource("/images/casaPreta-peaoBranco.jpg")
-				.toExternalForm();
-
-		Image imgCasaPreta = new Image(strCasaPreta);
-
-		System.out.println("rodando set Piece");
-
-		imageSq[3][3] = new ImageView();
-		imageSq[3][3].setImage(imgCasaPreta);
-		imageSq[3][3].setFitWidth(96 * scaleFactor);
-		imageSq[3][3].setFitHeight(96 * scaleFactor);
-		gridPane.add(imageSq[3][3], 3, 3);
-    */
-	}
-
-	
 	public void loadImagesIntoMemory() {
 
 		final String strCasaPreta = getClass().getResource("/images/casaPreta96x96.jpg").toExternalForm();
@@ -252,20 +168,7 @@ public class GuiBoard {
 
 		imgPretasReiCasaBranca = new Image(strPretasReiCasaBranca);
 		imgPretasReiCasaPreta = new Image(strPretasReiCasaPreta);
-
-		System.out.println("Carregadas todas imagens na memória");
-
 	}
-
-    public void clearStackPane() {
-	//	gridPane.getChildren().clear();
-	//	stackPane.getChildren().clear();
-	
-	//	stackPane.setBorder(Border.EMPTY);
-	///stackPane.setStyle("-fx-border-width:0; -fx-border-color:WHITE;");
-	
-    }
-    
 
 	public void drawEmptyBoard() {
 		System.out.println("rodando loadCriaGrid");
@@ -458,18 +361,6 @@ public class GuiBoard {
 	
     //}
 
-
-    public void movePieceInBoardASCII(int mousePressedColumn, int mousePressedRow, int mouseReleasedColumn, int mouseReleasedRow,char[] boardASCII) {
-		boardASCII[10*(mouseReleasedColumn+1)+mouseReleasedRow+1] = boardASCII[10*(mousePressedColumn+1)+ mousePressedRow+1];
-		boardASCII[10*(mousePressedColumn+1) +mousePressedRow+1] = ' ';	
-	//	char currentChar = boardASCII[10*(mouseReleasedColumn+1)+ mouseReleasedRow+1];
-    //	if (currentChar == ' ') {
-	//	imageSq[mouseReleasedColumn][mouseReleasedRow] = imageSq[mousePressedColumn][mousePressedRow];
-		//        imageSq[mousePressedColumn][mousePressedRow] = imageEmptyBoard[mousePressedColumn][mousePressedRow];	
-		//	}
-   
-    }
-
     public GridPane getGridPane() {
     	return gridPane;
     }
@@ -505,7 +396,6 @@ public class GuiBoard {
     public void drawBoard(String FENatual) { 
 		FENProcessor.passFENtoLines(FENatual);
 		FENProcessor.decriptFEN();
-		//boardModel.printBoardASCII();
 		drawEmptyBoard();
 		refreshBoardImage(FENProcessor.getBoardASCII());
     }

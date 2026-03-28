@@ -72,14 +72,10 @@ public class ConstructChessBoard {
 	private MovePiece movePiece;
 	private int mousePressedColumn, mousePressedRow, mouseReleasedColumn, mouseReleasedRow;
 	private int actualMove = 0;
-	//private PgnReader actualPgnPlaying;
 	private String numVariante;
 	private Game game;
     private MoveList moveList;
-	//private PgnReader toPlayGame;
-	//private PgnReader problemToSolve;
 	private Map<Integer, List<String>> gameMap;
-//	private boolean isOpeningPlaying = false;
 	private Timeline debounceTimeline;
 	private boolean isDebouncing = false;
 	private final String initialBoardPostionFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq";
@@ -92,11 +88,6 @@ public class ConstructChessBoard {
 
     public ConstructChessBoard() {
 		FENProcessor = new FenProcessor();
-		movePiece = new MovePiece();
-		String pgnExamplePath =
-				getClass().getResource("/pgn/01_DefesaEslava_VarianteMaisImportante(b)_FonteXB.pgn").toExternalForm();
-		System.out.println("aqui2");
-
 
 		// Configurar debounce Timeline
 		debounceTimeline = new Timeline(new KeyFrame(Duration.millis(100), event -> isDebouncing = false));
@@ -110,50 +101,11 @@ public class ConstructChessBoard {
 
 	public void centralizaTabuleiro() {
 		menuBar.setVisible(false);
-		// anchorPane.setLeftAnchor(labelRef, 0.0);
-		// anchorPane.setRightAnchor(labelRef, 0.0);
-		// labelRef.setAlignment(Pos.CENTER);
 		labelRef.setVisible(false);
 
-		//labelRef.setText("aaaaaaa");
-		// tabuleiro.setMaxSize(100,50);
 		stackPane.setAlignment(stackPane, Pos.CENTER);
-		/// borderPane.set
-		// setAlignment(Pos.CENTER);
 		stackPane.setAlignment(Pos.CENTER);
-		// setAlignment(labelRef,);
 
-	}
-
-	/*
-	 * private Node getNodeFromGridPane(GridPane gridPane, int col, int row) { for
-	 * (Node node : gridPane.getChildren()) { if (GridPane.getColumnIndex(node) ==
-	 * col && GridPane.getRowIndex(node) == row) { return node; } } return null; }
-	 */
-	/*
-	 * public void createBoard(){ tabuleiro.getChildren().add(imageView); for(int i
-	 * =0;i < 8; i++){ for(int j = 0; j < 8; j++){ //Tile tile = new Tile(i, j);
-	 * GridPane.setConstraints(tile.getPane(), i, j);
-	 * tabuleiro.getChildren().add(tile.getPane()); } }
-	 * 
-	 * }
-	 */
-
-	/*
-	public void drawBoard() {
-		// boardGUI.drawEmptyBoard(stackPane); // To draw the pieces in the board it's
-		// necessary to creaty instances os all
-		// squares before (AP????)
-
-		//boardModel.passFENtoLines("rnb1k1nr/ppp3pp/6q1/4p1B1/1b2P3/2N2N2/PPP3PP/3RKB1R w Kkq - 0 1");
-		boardModel.decriptFEN();
-		//boardModel.printBoardASCII();
-		boardGUI.refreshBoardImage(stackPane, boardModel.getBoardASCII());
-		//boardGUI.rotateTheImagesSqIfNeeded();
-	}
-*/
-	public Label getLabelAlvo() {
-		return labelAlvo;
 	}
 
 	public void hideEverything() {
@@ -165,16 +117,6 @@ public class ConstructChessBoard {
 
 		
 		bigGrid.requestFocus();
-		// stackPane.setAlignment(vbox, Pos.TOP_LEFT);
-		//bigGrid.requestFocus();
-		
-		// vbox.setAlignment(Pos.TOP_CENTER);
-		// vbox.setMargin(stackPane, new Insets(0,10,10,0));
-		// Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-
-		// frame.setLocation(dim.width/2-frame.getSize().width/2,
-		// dim.height / 2 - frame.getSize().height / 2);
-
 	}
 
 	public void releasedTheKey() {
@@ -267,28 +209,6 @@ public class ConstructChessBoard {
 						boardGUI.drawBoard(FENatual);
 					}
 
-					/*if (key.getText().equals("M")) {//mate em 3
-						String FENstring;
-						Button btnNome = new Button("Entrar com FEN");
-						TextInputDialog dialogoFEN = new TextInputDialog();
-
-						dialogoFEN.setTitle("Entrar com FEN");
-						dialogoFEN.setHeaderText("Entrar com FEN");
-						dialogoFEN.setContentText("FEN:");
-						dialogoFEN.getEditor().setPrefWidth(500);
-
-						Optional<String> result = dialogoFEN.showAndWait();
-
-						if (!result.isPresent() || result.get().trim().isBlank()) {
-							//Do nothing
-						} else {
-							FENstring = result.get();
-							boardGUI.drawBoard(FENstring);
-						}
-						//boardGUI.drawBoard(FENatual);
-						showCtrlMessage = false;
-					}
-*/
 					if (key.getCode() == KeyCode.R) {
 						//boardGUI.changeNeedToRotateTheBoard();
 						boardGUI.setAngleToRotate();
@@ -391,13 +311,6 @@ public class ConstructChessBoard {
 
 							stage.setFullScreen(true);
 						});
-						/*Stage stage = PGNloader.getStage();
-                       	stage.initStyle(StageStyle.UNDECORATED);
-						stage.setMaximized(true);
-
-							stage.setFullScreen(true);
-							stage.setAlwaysOnTop(true);
-					*/
                     }
 
 					if (key.getCode() == KeyCode.X) {
@@ -431,10 +344,6 @@ public class ConstructChessBoard {
 							System.out.println("NumVar:#" + numVariante);
 							String stringPathPGN = OpeningsSources.getOpeningPath(numVariante);
                             openAndLoadPGNfile(stringPathPGN);
-							//actualPgnPlaying = new PgnReader(stringPathPGN);
-							//String fen = actualPgnPlaying.getFEN();
-							//boardGUI.drawBoard(fen);
-
 						}
 					}
 
@@ -598,11 +507,6 @@ public class ConstructChessBoard {
         loadPgnAndUpdateEverything(filePathToSave);
 	}
 
-	/*private String getWhoMates() {
-		return (actualPgnPlaying.getGame().getGameInfo().getEvent() + actualPgnPlaying.getGame().getGameInfo().getPlayers()[1]);
-	}*/
-
-
 	public static String getPenultimateSegment(String filePath) {
 		String[] segments = filePath.split("/");
 
@@ -674,8 +578,8 @@ public class ConstructChessBoard {
 			FENProcessor.printBoardASCII();
 			boardGUI.drawEmptyBoard();
 			boardGUI.refreshBoardImage(FENProcessor.getBoardASCII());
-			
-			//if (boardGUI.getIfNeedToRotateTheBoard()&&(boardGUI.getAngleToRotateTheBoard()==0)) boardGUI.rotateTheBoard(); 
+
+			//if (boardGUI.getIfNeedToRotateTheBoard()&&(boardGUI.getAngleToRotateTheBoard()==0)) boardGUI.rotateTheBoard();
 		}
 		*/
 		// }
