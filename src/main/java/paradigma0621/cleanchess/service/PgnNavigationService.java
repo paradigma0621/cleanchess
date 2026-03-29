@@ -93,4 +93,13 @@ public class PgnNavigationService {
         }*/
         return pgnPath;
     }
+
+    public void restartGamePosition() {
+        indexMove = -1;
+        game.gotoMove((MoveList) moveList, indexMove);
+        System.out.println("Back to beginning");
+
+        guiBoard.drawBoard(isOpeningPlaying ? completeInitialFEN : game.getFen());
+    }
+
 }

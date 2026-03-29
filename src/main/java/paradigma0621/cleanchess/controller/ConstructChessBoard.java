@@ -6,8 +6,10 @@ import com.github.bhlangonijr.chesslib.move.MoveList;
 import com.github.bhlangonijr.chesslib.pgn.PgnIterator;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -75,7 +77,6 @@ public class ConstructChessBoard {
 	private Map<Integer, List<String>> gameMap;
 	private Timeline debounceTimeline;
 	private boolean isDebouncing = false;
-	private final String initialBoardPostionFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq";
     private PgnIterator listOfGamesInPGN;
     private Board board;
     private int indexMove = -1;
@@ -101,12 +102,13 @@ public class ConstructChessBoard {
 
 		ViewerActionService viewerActionService =
 				new ViewerActionService(
+						this,
 						pgnNavigationService,
 						visualActionService,
 						helpDialog
 				);
 
-		keyboardShortcutHandler = new KeyboardShortcutHandler(viewerActionService);
+		keyboardShortcutHandler = new KeyboardShortcutHandler(this, viewerActionService);
 
 		bigGrid.setOnKeyPressed(this::handleKeyReleased);
 	}
@@ -139,36 +141,7 @@ public class ConstructChessBoard {
 				boolean showCtrlMessage = true;
 
 				if (key.isControlDown() || key.getCode().equals(KeyCode.COMMAND)) {
-					if ((key.getCode() == key.getCode().LEFT)) {
-                        indexMove = (indexMove >= 0) ? --indexMove : -1;
-                        game.gotoMove(moveList, indexMove);
-                        String FENatual = game.getBoard().getFen();
-                        System.out.println("Previous move");
-                        System.out.println("Previous move");
 
-                        if (indexMove < 0)
-                            guiBoard.drawBoard(isOpeningPlaying ? completeInitialFEN : game.getFen());
-                        else
-                            guiBoard.drawBoard(FENatual);
-                    }
-
-					if (key.getCode() == key.getCode().RIGHT) {
-                        indexMove = (indexMove >= (moveList.size() - 1)) ? indexMove : ++indexMove;
-                        game.gotoMove(moveList, indexMove);
-                        String FENatual = game.getBoard().getFen();
-
-                        System.out.println("Next Move");
-
-                        guiBoard.drawBoard(FENatual);
-					}
-
-					if ((key.getCode() == key.getCode().DOWN)) {
-                        indexMove = -1;
-                        game.gotoMove(moveList, indexMove);
-                        System.out.println("Back to beginning");
-
-                        guiBoard.drawBoard(isOpeningPlaying ? completeInitialFEN : game.getFen());
-                    }
 
 
 					if (key.getCode() == KeyCode.DELETE) {
@@ -205,18 +178,6 @@ public class ConstructChessBoard {
 					}
 
 
-					if (key.getCode() == KeyCode.F) {
-                        toogleFullScreen();
-                        hideEverything();
-						Platform.runLater(() -> {
-							StageSingleton.getInstance().setFullScreenExitHint("");
-							StageSingleton.getInstance().setFullScreen(true);
-						});
-					}
-
-                    if (key.getCode() == KeyCode.SPACE) {
-                        labelRef.setVisible(!labelRef.isVisible());
-                    }
 
 
                     if (key.getCode() == KeyCode.F3) {
@@ -266,18 +227,6 @@ public class ConstructChessBoard {
                         labelRef.setText("carregou game: " + numVariante + " - Agora quem move: " + sideToMove.value());
                     }
 
-
-                    if (key.getCode() == KeyCode.ADD) {
-                        System.out.println("zoom in");
-                        stackPane.setScaleX(1.2 * stackPane.getScaleX());
-                        stackPane.setScaleY(1.2 * stackPane.getScaleY());
-                    }
-
-
-                    if (key.getCode() == KeyCode.SUBTRACT) {
-                        stackPane.setScaleX(0.8 * stackPane.getScaleX());
-                        stackPane.setScaleY(0.8 * stackPane.getScaleY());
-                    }
 
                     if (key.getCode() == KeyCode.P) {
 						Stage stage = StageSingleton.getInstance();
@@ -537,4 +486,41 @@ public class ConstructChessBoard {
         }
         return null; // não existe nó nessa posição
     }
+
+
+	public void zoomIn() {
+		stackPane.setScaleX(1.2 * stackPane.getScaleX());
+		stackPane.setScaleY(1.2 * stackPane.getScaleY());
+	}
+
+	public void zoomOut() {
+		stackPane.setScaleX(0.8 * stackPane.getScaleX());
+		stackPane.setScaleY(0.8 * stackPane.getScaleY());
+	}
+
+	public void fullScreen() {
+		toogleFullScreen();
+		hideEverything();
+		Platform.runLater(() -> {
+			StageSingleton.getInstance().setFullScreenExitHint("");
+			StageSingleton.getInstance().setFullScreen(true);
+		});
+	}
+
+	public void hideEverything() {
+		labelRef.setVisible(false);
+		anchorPane.setVisible(false);
+		menuBar.setVisible(false);
+		gridPaneGeral_Row3.setValignment(VPos.BOTTOM);
+		bigGrid.requestFocus();
+	}
+
+	public void showLabel() {
+		labelRef.setVisible(!labelRef.isVisible());
+	}
+
+	public void showKeyPressed(KeyEvent key) {
+		labelRef.setText("You pressed " + key.getCode().getName());
+	}
+
 }
