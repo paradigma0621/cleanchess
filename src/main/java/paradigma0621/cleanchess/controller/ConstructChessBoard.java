@@ -14,8 +14,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -96,7 +94,7 @@ public class ConstructChessBoard {
 		FenProcessor fenProcessor = new FenProcessor();
 		guiBoard = new GuiBoard(fenProcessor, stackPane);
 
-		PgnNavigationService pgnNavigationService = new PgnNavigationService(guiBoard);
+		PgnNavigationService pgnNavigationService = new PgnNavigationService(guiBoard, this);
 		VisualActionService visualActionService = new VisualActionService(guiBoard);
 		HelpDialog helpDialog = new HelpDialog();
 
@@ -523,4 +521,7 @@ public class ConstructChessBoard {
 		labelRef.setText("You pressed " + key.getCode().getName());
 	}
 
+	public void showInLabel(String text) {
+		labelRef.setText(text);
+	}
 }

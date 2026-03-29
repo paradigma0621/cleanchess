@@ -29,6 +29,7 @@ public class ViewerActionService {
             case PREVIOUS_MOVE -> pgnNavigationService.previousMove();
             case ROTATE_BOARD -> visualActionService.rotateBoard();
             case SHOW_SHORTCUTS_HELP_MESSAGE -> helpDialog.openHelpDialog();
+            case SHOW_WHO_PLAY_AND_GAME_INFO -> pgnNavigationService.showWhoPlayAndGameInfo();
             case LOAD_SIMPLE_FEN -> visualActionService.drawFEN();
             case LOAD_SIMPLE_PGN -> pgnNavigationService.loadPGN();
             case RESTART_PGN_POSITION -> pgnNavigationService.restartGamePosition();
@@ -36,6 +37,7 @@ public class ViewerActionService {
             case ZOOM_OUT -> constructChessBoard.zoomOut();
             case FULL_SCREEN -> constructChessBoard.fullScreen();
             case SHOW_HIDE_LABEL -> constructChessBoard.showLabel();
+            case LOAD_PGN_WITH_MANY_GAMES -> pgnNavigationService.loadPGNwithManyGames();
         }
 
     }
