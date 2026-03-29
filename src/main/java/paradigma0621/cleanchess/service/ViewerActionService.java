@@ -27,6 +27,7 @@ public class ViewerActionService {
             case ROTATE_BOARD -> visualActionService.rotateBoard();
             case SHOW_SHORTCUTS_HELP_MESSAGE -> helpDialog.openHelpDialog();
             case LOAD_SIMPLE_FEN -> visualActionService.drawFEN();
+            case LOAD_SIMPLE_PGN -> pgnNavigationService.loadPGN();
         }
 
     }

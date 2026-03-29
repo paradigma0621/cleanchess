@@ -1,13 +1,18 @@
 package paradigma0621.cleanchess.model;
 
 import static java.lang.Character.getNumericValue;
+import static java.util.Objects.isNull;
 
 public class FenProcessor {
 	private final char[][] charFEN = new char[10][9];
 	private final char[][] parametersFEN = new char[7][7];
 	private final char[] boardASCII = new char[89];
-    
+	private final String completeInitialFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
 	public void passFENtoLines(String stringFEN) {
+		if (isNull(stringFEN))
+			stringFEN = completeInitialFEN;
+		
 		String[] sTemp = stringFEN.split("/");
 		String[] strLastLineAndParameters = sTemp[7].split(" "); // the last line of the FEN doesn't has the "/", so I
 									// store the last line and the parameters of the

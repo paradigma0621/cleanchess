@@ -26,8 +26,9 @@ public class KeyboardShortcutHandler {
         } else if (event.isControlDown() && event.getCode() == KeyCode.F1) {
             viewerActionService.dispatch(ViewerStateEnum.SHOW_SHORTCUTS_HELP_MESSAGE);
         } else if (event.isControlDown() && event.getCode() == KeyCode.M) {
-            System.out.println("g0");
             viewerActionService.dispatch(ViewerStateEnum.LOAD_SIMPLE_FEN);
+        } else if (event.isControlDown() && event.getCode() == KeyCode.A) {
+            viewerActionService.dispatch(ViewerStateEnum.LOAD_SIMPLE_PGN);
         }
     }
 }

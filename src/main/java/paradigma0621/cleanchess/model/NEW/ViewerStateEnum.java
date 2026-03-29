@@ -5,5 +5,6 @@ public enum ViewerStateEnum {
     PREVIOUS_MOVE,
     ROTATE_BOARD,
     SHOW_SHORTCUTS_HELP_MESSAGE,
-    LOAD_SIMPLE_FEN
+    LOAD_SIMPLE_FEN,
+    LOAD_SIMPLE_PGN
 }

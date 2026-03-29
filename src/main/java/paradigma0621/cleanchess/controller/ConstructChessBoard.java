@@ -79,7 +79,7 @@ public class ConstructChessBoard {
     private PgnIterator listOfGamesInPGN;
     private Board board;
     private int indexMove = -1;
-    private final String completeInitialFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+	private final String completeInitialFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     private boolean isOpeningPlaying;
 	private KeyboardShortcutHandler keyboardShortcutHandler;
 
@@ -95,7 +95,7 @@ public class ConstructChessBoard {
 		FenProcessor fenProcessor = new FenProcessor();
 		guiBoard = new GuiBoard(fenProcessor, stackPane);
 
-		PgnNavigationService pgnNavigationService = new PgnNavigationService();
+		PgnNavigationService pgnNavigationService = new PgnNavigationService(guiBoard);
 		VisualActionService visualActionService = new VisualActionService(guiBoard);
 		HelpDialog helpDialog = new HelpDialog();
 
@@ -143,6 +143,7 @@ public class ConstructChessBoard {
                         indexMove = (indexMove >= 0) ? --indexMove : -1;
                         game.gotoMove(moveList, indexMove);
                         String FENatual = game.getBoard().getFen();
+                        System.out.println("Previous move");
                         System.out.println("Previous move");
 
                         if (indexMove < 0)
@@ -217,21 +218,6 @@ public class ConstructChessBoard {
                         labelRef.setVisible(!labelRef.isVisible());
                     }
 
-                    if (key.getCode() == KeyCode.A) {
-
-						InputStream inputStream = getClass()
-								.getClassLoader()
-								.getResourceAsStream("/mnt/drive_docs/all/programacao/github/cleanchess/01_VarianteDasTrocas_Variante01.pgn");
-
-						String pgnPath;
-						try {
-							pgnPath = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-						} catch (IOException e) {
-							throw new RuntimeException(e);
-						}
-
-                        openAndLoadPGNfile(pgnPath);
-                    }
 
                     if (key.getCode() == KeyCode.F3) {
                         indexMove = -1;
@@ -413,12 +399,6 @@ public class ConstructChessBoard {
     }
 
     private void openAndLoadPGNfile(String pgnPath) {
-        File file = new File(pgnPath);
-
-        if (!file.exists()) {
-            System.err.println("Arquivo não encontrado: " + pgnPath);
-            return;
-        }
 
         try {
             listOfGamesInPGN = new PgnIterator(pgnPath);
@@ -486,7 +466,7 @@ public class ConstructChessBoard {
 	}
 
 	public void clickPressed(javafx.scene.input.MouseEvent event) {
-
+/*
 		/// System.out.println("clicou no pane");
 		Node clickedNode = event.getPickResult().getIntersectedNode();
 		/// if (clickedNode != gridPane) {
@@ -499,7 +479,8 @@ public class ConstructChessBoard {
 		mousePressedColumn = colIndex;
 		mousePressedRow = rowIndex;
 
-		// }
+
+ */
 	}
 
 	public void clickReleased(javafx.scene.input.MouseEvent event) {

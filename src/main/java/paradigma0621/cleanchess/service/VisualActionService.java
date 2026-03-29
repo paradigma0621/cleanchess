@@ -10,7 +10,6 @@ public class VisualActionService {
     }
 
     public void rotateBoard() {
-        //boardGUI.changeNeedToRotateTheBoard();
         guiBoard.setAngleToRotate();
         guiBoard.rotateTheBoard();
     }
