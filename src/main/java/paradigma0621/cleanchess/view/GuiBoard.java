@@ -16,158 +16,13 @@ public class GuiBoard {
    	private ImageView imageEmptyBoard[][] = new ImageView[9][9];
    	private boolean needToRotateTheBoard = false;
    	int angleToRotateTheBoard=0;
-   	
-	private Image imgCasaBranca;
-	private Image imgCasaPreta;
-
-	private Image imgBrancasPeaoCasaBranca;
-	private Image imgBrancasPeaoCasaPreta;
-
-	private Image imgBrancasTorreCasaBranca;
-	private Image imgBrancasTorreCasaPreta;
-
-	private Image imgBrancasCavaloCasaBranca;
-	private Image imgBrancasCavaloCasaPreta;
-
-	private Image imgBrancasBispoCasaBranca;
-	private Image imgBrancasBispoCasaPreta;
-
-	private Image imgBrancasDamaCasaBranca;
-	private Image imgBrancasDamaCasaPreta;
-
-	private Image imgBrancasReiCasaBranca;
-	private Image imgBrancasReiCasaPreta;
-	// -------------------------------------------------------------
-
-	private Image imgPretasPeaoCasaBranca;
-	private Image imgPretasPeaoCasaPreta;
-
-	private Image imgPretasTorreCasaBranca;
-	private Image imgPretasTorreCasaPreta;
-
-	private Image imgPretasCavaloCasaBranca;
-	private Image imgPretasCavaloCasaPreta;
-
-	private Image imgPretasBispoCasaBranca;
-	private Image imgPretasBispoCasaPreta;
-
-	private Image imgPretasDamaCasaBranca;
-	private Image imgPretasDamaCasaPreta;
-
-	private Image imgPretasReiCasaBranca;
-	private Image imgPretasReiCasaPreta;
+   	private ViewerImageCache viewerImageCache;
 
 	public GuiBoard(FenProcessor FENProcessor, StackPane stackPane) { /// , BorderPane stackPane) {
 		this.FENProcessor = FENProcessor;
 		this.stackPane = stackPane;
-		loadImagesIntoMemory();
+		viewerImageCache = new ViewerImageCache();
 		System.out.println("Foi atribuido corretamente o stackPane na classe GUIBoard");
-	}
-
-	public void loadImagesIntoMemory() {
-
-		final String strCasaPreta = getClass().getResource("/images/casaPreta96x96.jpg").toExternalForm();
-		final String strCasaBranca = getClass().getResource("/images/casaBranca96x96.jpg").toExternalForm();
-		final String strBrancasPeaoCasaBranca = getClass().getResource("/images/casaBranca-peaoBranco.jpg")
-				.toExternalForm();
-		final String strBrancasPeaoCasaPreta = getClass().getResource("/images/casaPreta-peaoBranco.jpg")
-				.toExternalForm();
-
-		final String strBrancasTorreCasaBranca = getClass().getResource("/images/casaBranca-torreBranca.jpg")
-				.toExternalForm();
-		final String strBrancasTorreCasaPreta = getClass().getResource("/images/casaPreta-torreBranca.jpg")
-				.toExternalForm();
-
-		final String strBrancasCavaloCasaBranca = getClass().getResource("/images/casaBranca-cavaloBranco.jpg")
-				.toExternalForm();
-		final String strBrancasCavaloCasaPreta = getClass().getResource("/images/casaPreta-cavaloBranco.jpg")
-				.toExternalForm();
-
-		final String strBrancasBispoCasaBranca = getClass().getResource("/images/casaBranca-bispoBranco.jpg")
-				.toExternalForm();
-		final String strBrancasBispoCasaPreta = getClass().getResource("/images/casaPreta-bispoBranco.jpg")
-				.toExternalForm();
-
-		final String strBrancasDamaCasaBranca = getClass().getResource("/images/casaBranca-damaBranca.jpg")
-				.toExternalForm();
-		final String strBrancasDamaCasaPreta = getClass().getResource("/images/casaPreta-damaBranca.jpg")
-				.toExternalForm();
-
-		final String strBrancasReiCasaBranca = getClass().getResource("/images/casaBranca-reiBranco.jpg")
-				.toExternalForm();
-		final String strBrancasReiCasaPreta = getClass().getResource("/images/casaPreta-reiBranco.jpg")
-				.toExternalForm();
-
-		// -------------------------------------------------------------
-		final String strPretasPeaoCasaBranca = getClass().getResource("/images/casaBranca-peaoPreto.jpg")
-				.toExternalForm();
-		final String strPretasPeaoCasaPreta = getClass().getResource("/images/casaPreta-peaoPreto.jpg")
-				.toExternalForm();
-
-		final String strPretasTorreCasaBranca = getClass().getResource("/images/casaBranca-torrePreta.jpg")
-				.toExternalForm();
-		final String strPretasTorreCasaPreta = getClass().getResource("/images/casaPreta-torrePreta.jpg")
-				.toExternalForm();
-
-		final String strPretasCavaloCasaBranca = getClass().getResource("/images/casaBranca-cavaloPreto.jpg")
-				.toExternalForm();
-		final String strPretasCavaloCasaPreta = getClass().getResource("/images/casaPreta-cavaloPreto.jpg")
-				.toExternalForm();
-
-		final String strPretasBispoCasaBranca = getClass().getResource("/images/casaBranca-bispoPreto.jpg")
-				.toExternalForm();
-		final String strPretasBispoCasaPreta = getClass().getResource("/images/casaPreta-bispoPreto.jpg")
-				.toExternalForm();
-
-		final String strPretasDamaCasaBranca = getClass().getResource("/images/casaBranca-damaPreta.jpg")
-				.toExternalForm();
-		final String strPretasDamaCasaPreta = getClass().getResource("/images/casaPreta-damaPreta.jpg")
-				.toExternalForm();
-
-		final String strPretasReiCasaBranca = getClass().getResource("/images/casaBranca-reiPreto.jpg")
-				.toExternalForm();
-		final String strPretasReiCasaPreta = getClass().getResource("/images/casaPreta-reiPreto.jpg").toExternalForm();
-
-		imgCasaBranca = new Image(strCasaBranca);
-		imgCasaPreta = new Image(strCasaPreta);
-
-		imgBrancasPeaoCasaBranca = new Image(strBrancasPeaoCasaBranca);
-		imgBrancasPeaoCasaPreta = new Image(strBrancasPeaoCasaPreta);
-
-		imgBrancasTorreCasaBranca = new Image(strBrancasTorreCasaBranca);
-		imgBrancasTorreCasaPreta = new Image(strBrancasTorreCasaPreta);
-
-		imgBrancasCavaloCasaBranca = new Image(strBrancasCavaloCasaBranca);
-		imgBrancasCavaloCasaPreta = new Image(strBrancasCavaloCasaPreta);
-
-		imgBrancasBispoCasaBranca = new Image(strBrancasBispoCasaBranca);
-		imgBrancasBispoCasaPreta = new Image(strBrancasBispoCasaPreta);
-
-		imgBrancasDamaCasaBranca = new Image(strBrancasDamaCasaBranca);
-		imgBrancasDamaCasaPreta = new Image(strBrancasDamaCasaPreta);
-
-		imgBrancasReiCasaBranca = new Image(strBrancasReiCasaBranca);
-		imgBrancasReiCasaPreta = new Image(strBrancasReiCasaPreta);
-
-		// -------------------------------------------------------
-
-		imgPretasPeaoCasaBranca = new Image(strPretasPeaoCasaBranca);
-		imgPretasPeaoCasaPreta = new Image(strPretasPeaoCasaPreta);
-
-		imgPretasTorreCasaBranca = new Image(strPretasTorreCasaBranca);
-		imgPretasTorreCasaPreta = new Image(strPretasTorreCasaPreta);
-
-		imgPretasCavaloCasaBranca = new Image(strPretasCavaloCasaBranca);
-		imgPretasCavaloCasaPreta = new Image(strPretasCavaloCasaPreta);
-
-		imgPretasBispoCasaBranca = new Image(strPretasBispoCasaBranca);
-		imgPretasBispoCasaPreta = new Image(strPretasBispoCasaPreta);
-
-		imgPretasDamaCasaBranca = new Image(strPretasDamaCasaBranca);
-		imgPretasDamaCasaPreta = new Image(strPretasDamaCasaPreta);
-
-		imgPretasReiCasaBranca = new Image(strPretasReiCasaBranca);
-		imgPretasReiCasaPreta = new Image(strPretasReiCasaPreta);
 	}
 
 	public void drawEmptyBoard() {
@@ -188,10 +43,10 @@ public class GuiBoard {
 				imageEmptyBoard[i][j] = new ImageView();
 
 				if (((i + j) % 2) == 0)
-				    	imageEmptyBoard[i][j].setImage(imgCasaBranca);
+				    	imageEmptyBoard[i][j].setImage(viewerImageCache.getSquareImage(ViewerImageCache.SquareColor.WHITE));
 
 				if (((i + j) % 2) == 1)
-					imageEmptyBoard[i][j].setImage(imgCasaPreta);
+					imageEmptyBoard[i][j].setImage(viewerImageCache.getSquareImage(ViewerImageCache.SquareColor.BLACK));
 
 				imageEmptyBoard[i][j].setFitWidth(96 * scaleFactor);
 				imageEmptyBoard[i][j].setFitHeight(96 * scaleFactor);
@@ -202,151 +57,58 @@ public class GuiBoard {
 	}
 
 	public void refreshBoardImage(char[] boardASCII) {
-		char currentChar;
-		boolean isWhiteSquare = true;
-
 		for (int column = 1; column <= 8; column++) {
 			for (int line = 1; line <= 8; line++) {
-				currentChar = boardASCII[column * 10 + line];
+				char currentChar = boardASCII[column * 10 + line];
+				ViewerImageCache.SquareColor squareColor = getSquareColor(column, line);
 
-				if (((column + line) % 2) == 0) {
-					isWhiteSquare = true;
+				if (currentChar == ' ') {
+					imageSq[column][line] = imageEmptyBoard[column][line];
+					continue;
 				}
 
-				if (((column + line) % 2) == 1) {
-					isWhiteSquare = false;
-				}
+				ImageView imageView = new ImageView();
+				imageView.setImage(getPieceImage(currentChar, squareColor));
+				imageView.setFitWidth(96 * scaleFactor);
+				imageView.setFitHeight(96 * scaleFactor);
 
-			
-				switch (currentChar) {
-					case ' ':
-						// System.out.println("Você escolheu 1");
-					    	  imageSq[column][line] = imageEmptyBoard[column][line];
-						break;
-					case 'P':
-						imageSq[column][line] = new ImageView();
-						if (isWhiteSquare)
-							imageSq[column][line].setImage(imgBrancasPeaoCasaBranca);
-						else
-							imageSq[column][line].setImage(imgBrancasPeaoCasaPreta);
-						break;
-
-					case 'R':
-						imageSq[column][line] = new ImageView();
-						if (isWhiteSquare)
-							imageSq[column][line].setImage(imgBrancasTorreCasaBranca);
-						else
-							imageSq[column][line].setImage(imgBrancasTorreCasaPreta);
-
-						break;
-
-					case 'N':
-						imageSq[column][line] = new ImageView();
-						if (isWhiteSquare)
-							imageSq[column][line].setImage(imgBrancasCavaloCasaBranca);
-						else
-							imageSq[column][line].setImage(imgBrancasCavaloCasaPreta);
-
-						break;
-
-					case 'B':
-						imageSq[column][line] = new ImageView();
-						if (isWhiteSquare)
-							imageSq[column][line].setImage(imgBrancasBispoCasaBranca);
-						else
-							imageSq[column][line].setImage(imgBrancasBispoCasaPreta);
-
-						break;
-
-					case 'Q':
-						imageSq[column][line] = new ImageView();
-						if (isWhiteSquare)
-							imageSq[column][line].setImage(imgBrancasDamaCasaBranca);
-						else
-							imageSq[column][line].setImage(imgBrancasDamaCasaPreta);
-
-						break;
-
-					case 'K':
-						imageSq[column][line] = new ImageView();
-						if (isWhiteSquare)
-							imageSq[column][line].setImage(imgBrancasReiCasaBranca);
-						else
-							imageSq[column][line].setImage(imgBrancasReiCasaPreta);
-
-						break;
-
-					case 'p':
-						imageSq[column][line] = new ImageView();
-						if (isWhiteSquare)
-							imageSq[column][line].setImage(imgPretasPeaoCasaBranca);
-						else
-							imageSq[column][line].setImage(imgPretasPeaoCasaPreta);
-
-						break;
-
-					case 'r':
-						imageSq[column][line] = new ImageView();
-						if (isWhiteSquare)
-							imageSq[column][line].setImage(imgPretasTorreCasaBranca);
-						else
-							imageSq[column][line].setImage(imgPretasTorreCasaPreta);
-
-						break;
-
-					case 'n':
-						imageSq[column][line] = new ImageView();
-						if (isWhiteSquare)
-							imageSq[column][line].setImage(imgPretasCavaloCasaBranca);
-						else
-							imageSq[column][line].setImage(imgPretasCavaloCasaPreta);
-
-						break;
-
-					case 'b':
-						imageSq[column][line] = new ImageView();
-						if (isWhiteSquare)
-							imageSq[column][line].setImage(imgPretasBispoCasaBranca);
-						else
-							imageSq[column][line].setImage(imgPretasBispoCasaPreta);
-
-						break;
-
-					case 'q':
-						imageSq[column][line] = new ImageView();
-						if (isWhiteSquare)
-							imageSq[column][line].setImage(imgPretasDamaCasaBranca);
-						else
-							imageSq[column][line].setImage(imgPretasDamaCasaPreta);
-
-						break;
-
-					case 'k':
-						imageSq[column][line] = new ImageView();
-						if (isWhiteSquare)
-							imageSq[column][line].setImage(imgPretasReiCasaBranca);
-						else
-							imageSq[column][line].setImage(imgPretasReiCasaPreta);
-
-						break;
-
-					default:
-						System.out.println("Número inválido");
-				}
-
-					if (currentChar != ' ') {
-						imageSq[column][line].setFitWidth(96 * scaleFactor);
-						imageSq[column][line].setFitHeight(96 * scaleFactor);
-						gridPane.add(imageSq[column][line], column - 1, line - 1);
-					}
-				}
-
+				imageSq[column][line] = imageView;
+				gridPane.add(imageView, column - 1, line - 1);
 			}
-		
-		if (angleToRotateTheBoard==180) rotateTheBoard();
+		}
+
+		if (angleToRotateTheBoard == 180) {
+			rotateTheBoard();
+		}
 	}
 
+	private ViewerImageCache.SquareColor getSquareColor(int column, int line) {
+		return ((column + line) % 2 == 0)
+				? ViewerImageCache.SquareColor.WHITE
+				: ViewerImageCache.SquareColor.BLACK;
+	}
 
+	private Image getPieceImage(char pieceChar, ViewerImageCache.SquareColor squareColor) {
+		ViewerImageCache.PieceColor pieceColor = Character.isUpperCase(pieceChar)
+				? ViewerImageCache.PieceColor.WHITE
+				: ViewerImageCache.PieceColor.BLACK;
+
+		ViewerImageCache.PieceType pieceType = mapPieceType(pieceChar);
+
+		return viewerImageCache.getPieceImage(pieceColor, pieceType, squareColor);
+	}
+
+	private ViewerImageCache.PieceType mapPieceType(char pieceChar) {
+		return switch (Character.toUpperCase(pieceChar)) {
+			case 'P' -> ViewerImageCache.PieceType.PAWN;
+			case 'N' -> ViewerImageCache.PieceType.KNIGHT;
+			case 'B' -> ViewerImageCache.PieceType.BISHOP;
+			case 'R' -> ViewerImageCache.PieceType.ROOK;
+			case 'Q' -> ViewerImageCache.PieceType.QUEEN;
+			case 'K' -> ViewerImageCache.PieceType.KING;
+			default -> throw new IllegalArgumentException("Peça inválida: " + pieceChar);
+		};
+	}
     /*
 
     public void clickGrid(javafx.scene.input.MouseEvent event) {

@@ -4,6 +4,8 @@ module paradigma0621.cleanchess {
     requires javafx.fxml;
 	requires javafx.graphics;
     requires javafx.controls;
+    requires javafx.swing;
+    requires static lombok;
 
     opens paradigma0621.cleanchess to javafx.fxml;
     exports paradigma0621.cleanchess;

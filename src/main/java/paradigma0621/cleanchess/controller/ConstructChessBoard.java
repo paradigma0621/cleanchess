@@ -1,38 +1,38 @@
 package paradigma0621.cleanchess.controller;
 
 import com.github.bhlangonijr.chesslib.Board;
-import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.game.Game;
 import com.github.bhlangonijr.chesslib.move.MoveList;
 import com.github.bhlangonijr.chesslib.pgn.PgnIterator;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import paradigma0621.cleanchess.input.KeyboardShortcutHandler;
 import paradigma0621.cleanchess.model.*;
 import paradigma0621.cleanchess.novos.model.StageSingleton;
+import paradigma0621.cleanchess.service.PgnNavigationService;
+import paradigma0621.cleanchess.service.ViewerActionService;
+import paradigma0621.cleanchess.service.VisualActionService;
 import paradigma0621.cleanchess.view.GuiBoard;
+import paradigma0621.cleanchess.view.HelpDialog;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static java.util.Objects.isNull;
-import static paradigma0621.cleanchess.model.PgnProblemListLoader.loadPgnFile;
 
 public class ConstructChessBoard {
 	@FXML
@@ -48,12 +48,9 @@ public class ConstructChessBoard {
 	@FXML
 	private MenuBar menuBar;
 	@FXML
-	private Label labelAlvo;
-	@FXML
 	private Button botaoAlvo;
 	@FXML
 	private Button trabalhaTabul;
-
     @FXML
 	private GridPane bigGrid;
 	@FXML
@@ -68,7 +65,7 @@ public class ConstructChessBoard {
 	private RowConstraints gridPaneGeral_Row4;
 
 	private FenProcessor FENProcessor;
-	private GuiBoard boardGUI;
+	private GuiBoard guiBoard;
 	private MovePiece movePiece;
 	private int mousePressedColumn, mousePressedRow, mouseReleasedColumn, mouseReleasedRow;
 	private int actualMove = 0;
@@ -84,7 +81,7 @@ public class ConstructChessBoard {
     private int indexMove = -1;
     private final String completeInitialFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     private boolean isOpeningPlaying;
-
+	private KeyboardShortcutHandler keyboardShortcutHandler;
 
     public ConstructChessBoard() {
 		FENProcessor = new FenProcessor();
@@ -95,8 +92,23 @@ public class ConstructChessBoard {
 	}
 	
 	public void initialize() {
-		boardGUI = new GuiBoard(FENProcessor, stackPane);
-		System.out.println("aqui");
+		FenProcessor fenProcessor = new FenProcessor();
+		guiBoard = new GuiBoard(fenProcessor, stackPane);
+
+		PgnNavigationService pgnNavigationService = new PgnNavigationService();
+		VisualActionService visualActionService = new VisualActionService(guiBoard);
+		HelpDialog helpDialog = new HelpDialog();
+
+		ViewerActionService viewerActionService =
+				new ViewerActionService(
+						pgnNavigationService,
+						visualActionService,
+						helpDialog
+				);
+
+		keyboardShortcutHandler = new KeyboardShortcutHandler(viewerActionService);
+
+		bigGrid.setOnKeyPressed(this::handleKeyReleased);
 	}
 
 	public void centralizaTabuleiro() {
@@ -108,25 +120,20 @@ public class ConstructChessBoard {
 
 	}
 
-	public void hideEverything() {
-        labelRef.setVisible(false);
-		anchorPane.setVisible(false);
-		menuBar.setVisible(false);
-
-		gridPaneGeral_Row3.setValignment(VPos.BOTTOM);
-
-		
-		bigGrid.requestFocus();
+	private void handleKeyReleased(KeyEvent event) {
+		if (!isDebouncing) {
+			isDebouncing = true;
+			keyboardShortcutHandler.handle(event);
+			debounceTimeline.playFromStart();
+		}
 	}
 
-	public void releasedTheKey() {
-
-	}
-	
-	
 	public void pressedAkey() {
-
-		bigGrid.addEventHandler(KeyEvent.KEY_RELEASED, key -> {
+		/*bigGrid.addEventHandler(KeyEvent.KEY_RELEASED, key -> {
+					keyboardShortcutHandler.handle(key);
+				});
+		/*
+		//bigGrid.addEventHandler(KeyEvent.KEY_RELEASED, key -> {
 			if (!isDebouncing) {
 				isDebouncing = true;
 				boolean showCtrlMessage = true;
@@ -139,9 +146,9 @@ public class ConstructChessBoard {
                         System.out.println("Previous move");
 
                         if (indexMove < 0)
-                            boardGUI.drawBoard(isOpeningPlaying ? completeInitialFEN : game.getFen());
+                            guiBoard.drawBoard(isOpeningPlaying ? completeInitialFEN : game.getFen());
                         else
-                            boardGUI.drawBoard(FENatual);
+                            guiBoard.drawBoard(FENatual);
                     }
 
 					if (key.getCode() == key.getCode().RIGHT) {
@@ -151,7 +158,7 @@ public class ConstructChessBoard {
 
                         System.out.println("Next Move");
 
-                        boardGUI.drawBoard(FENatual);
+                        guiBoard.drawBoard(FENatual);
 					}
 
 					if ((key.getCode() == key.getCode().DOWN)) {
@@ -159,14 +166,9 @@ public class ConstructChessBoard {
                         game.gotoMove(moveList, indexMove);
                         System.out.println("Back to beginning");
 
-                        boardGUI.drawBoard(isOpeningPlaying ? completeInitialFEN : game.getFen());
+                        guiBoard.drawBoard(isOpeningPlaying ? completeInitialFEN : game.getFen());
                     }
 
-
-                    if (key.getCode() == key.getCode().F1) {
-                        System.out.println("pressionou F1");
-                        openHelpDialog();
-                    }
 
 					if (key.getCode() == KeyCode.DELETE) {
 						System.out.println("DELETING NumVar:#" + numVariante);
@@ -198,22 +200,9 @@ public class ConstructChessBoard {
 						//lastFEN = toPlayGame.moveMaker(bestMove, actualPgnPlaying.getGame()); //actual move
 						System.out.println("fenMovida: " + initialBoardPostionFEN);
 
-						boardGUI.drawBoard(initialBoardPostionFEN);
+						guiBoard.drawBoard(initialBoardPostionFEN);
 					}
 
-
-					if (key.getCode() == KeyCode.M) {
-						//String FENatual="3B1R1K/4rb1R/5Pp1/1n2k1N1/2p3P1/2P5/2NQ4/8"; // ex 26 - white// checkmate in 2
-						String FENatual = "3B1R1K/4rb1R/5Pp1/1n2k1N1/2p3P1/2P5/2NQ4/8"; // mate 26 (em 2 (dos difíceis) - esse que vale com "m"
-						System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-						boardGUI.drawBoard(FENatual);
-					}
-
-					if (key.getCode() == KeyCode.R) {
-						//boardGUI.changeNeedToRotateTheBoard();
-						boardGUI.setAngleToRotate();
-						boardGUI.rotateTheBoard();
-					}
 
 					if (key.getCode() == KeyCode.F) {
                         toogleFullScreen();
@@ -249,7 +238,7 @@ public class ConstructChessBoard {
                         game.gotoMove(moveList, indexMove);
                         System.out.println("Back to beginning");
 
-                        boardGUI.drawBoard(isOpeningPlaying ? completeInitialFEN : game.getFen());
+                        guiBoard.drawBoard(isOpeningPlaying ? completeInitialFEN : game.getFen());
                     }
 
                     if (key.getCode() == KeyCode.F2) {
@@ -264,9 +253,9 @@ public class ConstructChessBoard {
                             game.setBoard(board);
 
                             if (isOpeningPlaying)
-                                boardGUI.drawBoard(completeInitialFEN);
+                                guiBoard.drawBoard(completeInitialFEN);
                             else
-                                boardGUI.drawBoard(game.getFen());
+                                guiBoard.drawBoard(game.getFen());
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
@@ -377,7 +366,7 @@ public class ConstructChessBoard {
 
 					if (key.getCode() == KeyCode.K) {
 						System.out.println("rodando  kkkkk");
-						movePiece.drawGrayRectangle(boardGUI, 1, 1);
+						movePiece.drawGrayRectangle(guiBoard, 1, 1);
 					}
 					showCtrlMessage = false;
 				} else {
@@ -389,43 +378,9 @@ public class ConstructChessBoard {
 				showCtrlMessage = false;
 				debounceTimeline.playFromStart();
 			}
-		});
+		});*/
 	}
 
-    private void openHelpDialog() {
-        String helpMsg = """
-            CTRL + DOWN: volta para o começo do pgn
-            CTRL + LEFT/RIGHT: avança/retrocede lance do pgn
-            CTRL + M: carrega FEN preestabelecida e chumbada em código
-            CTRL + A: carrega PGN preestabelecido e chumbada em código
-            CTRL + R: rotaciona tabuleiro
-            CTRL + F: AP: maximiza a tela do app - qual é a diff da abaixo?
-            CTRL + P: AP: maximiza a tela do app - qual é a diff da acima?
-            CTRL + SPACE: mostra/oculta labelRef
-            CTRL + N: carrega PGN com várias partidas/problemas dentro
-            CTRL + F2: avança as partidas/problemas do carregamento CRTL+N acima
-            CTRL + +: Zoom in do tabuleiro
-            CTRL + -: Zoom out do tabuleiro
-            CTRL + X: se o pgn que estiver aberto for uma abertura, mostra o nome da variante na labelRef
-            CTRL + O: mostra msgBox pra escolher numeração de uma abertura (ex de entradAA: 002)
-            CTRL + J: carrega variante/problema de número x (msgBox)
-            CTRL + DELETE: deleta variante atual e salva arquivo pgn sem ela
-            """;
-
-        Dialog<String> dialog = new Dialog<>();
-        dialog.setTitle("Informação detalhada");
-
-        TextArea area = new TextArea(helpMsg);
-        area.setWrapText(true);
-        area.setEditable(false);
-        area.setStyle("-fx-font-size: 34px;");
-
-        dialog.getDialogPane().setContent(area);
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
-        dialog.setHeight(1240);
-        dialog.setWidth(2440);
-        dialog.showAndWait();
-    }
 
     private void loadPgnAndUpdateEverything(String pgnPath) {
         File file = new File(pgnPath);
@@ -449,9 +404,9 @@ public class ConstructChessBoard {
 
             setIsOpeningPlaying();
             if (isOpeningPlaying)
-                boardGUI.drawBoard(completeInitialFEN);
+                guiBoard.drawBoard(completeInitialFEN);
             else
-                boardGUI.drawBoard(game.getFen());
+                guiBoard.drawBoard(game.getFen());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -479,7 +434,7 @@ public class ConstructChessBoard {
             setIsOpeningPlaying();
 
             if (isOpeningPlaying)
-                boardGUI.drawBoard(completeInitialFEN);
+                guiBoard.drawBoard(completeInitialFEN);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
